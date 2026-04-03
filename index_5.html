@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitaCenter — Centro de Salud & Estética</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --cream: #F5F0EB;
+    --deep-teal: #0D3D3A;
+    --teal: #1A5C57;
+    --teal-mid: #2A7A74;
+    --teal-light: #4AADA6;
+    --accent-gold: #C9A96E;
+    --accent-rose: #D4848A;
+    --soft-white: #FAFAF8;
+    --dark: #0A1A19;
+    --text-main: #1C2E2D;
+    --text-muted: #6B8583;
+    --border: rgba(26,92,87,0.15);
+    --glass: rgba(255,255,255,0.08);
+    --shadow: 0 20px 60px rgba(13,61,58,0.12);
+    --shadow-strong: 0 30px 80px rgba(13,61,58,0.22);
+    --r: 16px;
+    --r-lg: 28px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--soft-white);
+    color: var(--text-main);
+    overflow-x: hidden;
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; animation: fadeIn .45s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:1000;
+    background: rgba(13,61,58,0.96);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(74,173,166,0.2);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+    transition: all .3s;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 300;
+    color: var(--cream);
+    cursor: pointer; letter-spacing: .5px;
+  }
+  .nav-logo span { color: var(--teal-light); font-style: italic; }
+  .nav-links {
+    display: flex; gap: 6px; align-items: center;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(245,240,235,0.8);
+    text-decoration: none;
+    font-size: .82rem; font-weight: 500;
+    letter-spacing: .3px;
+    padding: 8px 14px; border-radius: 50px;
+    transition: all .25s; cursor: pointer;
+  }
+  .nav-links a:hover { background: rgba(74,173,166,0.18); color: var(--teal-light); }
+  .nav-links a.active { background: var(--teal-light); color: var(--deep-teal); }
+  .nav-cta {
+    background: var(--accent-gold) !important;
+    color: var(--dark) !important;
+    font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: #b8954f !important; transform: translateY(-1px); }
+  .hamburger { display:none; background:none; border:none; cursor:pointer; }
+  .hamburger span { display:block; width:24px; height:2px; background:var(--cream); margin:5px 0; transition:.3s; }
+
+  /* ─── HERO ─── */
+  #home {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--deep-teal) 50%, #0D4A45 100%);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1920&q=80');
+    background-size: cover; background-position: center;
+    opacity: .18;
+  }
+  .hero-mesh {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(74,173,166,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 20% 80%, rgba(201,169,110,0.15) 0%, transparent 50%);
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    flex:1; display:flex; flex-direction:column; justify-content:center;
+    padding: 130px 80px 80px;
+    max-width: 1400px; margin: 0 auto; width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(74,173,166,0.15);
+    border: 1px solid rgba(74,173,166,0.35);
+    color: var(--teal-light);
+    padding: 8px 18px; border-radius: 50px;
+    font-size: .78rem; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 32px;
+    width: fit-content;
+  }
+  .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--teal-light); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300; line-height: 1.05;
+    color: var(--cream); margin-bottom: 24px;
+  }
+  .hero-title em { color: var(--teal-light); font-style: italic; }
+  .hero-title strong { font-weight: 600; color: var(--accent-gold); }
+
+  .hero-sub {
+    font-size: 1.1rem; font-weight: 300;
+    color: rgba(245,240,235,0.7);
+    max-width: 540px; line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--teal-light);
+    color: var(--dark);
+    padding: 16px 36px; border-radius: 50px;
+    font-weight: 600; font-size: .95rem;
+    border: none; cursor: pointer;
+    transition: all .3s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    letter-spacing: .3px;
+  }
+  .btn-primary:hover { background: #5BBFB8; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(74,173,166,0.4); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--cream);
+    padding: 16px 36px; border-radius: 50px;
+    font-weight: 500; font-size: .95rem;
+    border: 1px solid rgba(245,240,235,0.3);
+    cursor: pointer; transition: all .3s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-outline:hover { border-color: var(--teal-light); color: var(--teal-light); transform: translateY(-2px); }
+
+  .hero-stats {
+    position: relative; z-index: 2;
+    display: flex; gap: 0;
+    border-top: 1px solid rgba(245,240,235,0.1);
+    max-width: 1400px; margin: 0 auto; width: 100%;
+    padding: 0 80px;
+  }
+  .hero-stat {
+    flex:1; padding: 28px 0;
+    border-right: 1px solid rgba(245,240,235,0.1);
+  }
+  .hero-stat:last-child { border-right:none; }
+  .hero-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 300;
+    color: var(--accent-gold); line-height:1;
+    margin-bottom: 6px;
+  }
+  .hero-stat-label { font-size: .8rem; color: rgba(245,240,235,0.55); letter-spacing: .5px; text-transform: uppercase; }
+
+  /* ─── SERVICE QUICK CARDS ─── */
+  .quick-section {
+    padding: 80px 80px;
+    background: var(--cream);
+    max-width: 1400px; margin: 0 auto;
+    width: 100%;
+  }
+  .section-tag {
+    font-size: .72rem; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--teal-mid);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300; color: var(--deep-teal);
+    line-height: 1.15; margin-bottom: 48px;
+  }
+  .section-title em { color: var(--teal-mid); font-style: italic; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--soft-white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 36px 32px;
+    cursor: pointer;
+    transition: all .35s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content:''; position:absolute; bottom:0; left:0; right:0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal-light), var(--accent-gold));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .35s;
+  }
+  .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: transparent; }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal-mid));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal-light); font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+  .service-card h3 { font-size: 1.1rem; font-weight: 600; color: var(--deep-teal); margin-bottom: 10px; }
+  .service-card p { font-size: .88rem; color: var(--text-muted); line-height: 1.6; }
+  .service-arrow {
+    position: absolute; top: 20px; right: 20px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal-mid); font-size: .75rem;
+    transition: all .3s;
+  }
+  .service-card:hover .service-arrow { background: var(--teal-light); color: white; border-color: transparent; }
+
+  /* ─── REVIEWS ─── */
+  .reviews-section {
+    padding: 80px;
+    background: var(--deep-teal);
+    position: relative; overflow:hidden;
+  }
+  .reviews-section::before {
+    content:'';position:absolute;inset:0;
+    background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(74,173,166,0.12),transparent);
+  }
+  .reviews-inner { max-width: 1400px; margin:0 auto; position:relative; z-index:1; }
+  .reviews-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; }
+  .reviews-header .section-title { color: var(--cream); margin-bottom:0; }
+  .rating-summary {
+    text-align:right;
+  }
+  .rating-big {
+    font-family: 'Cormorant Garamond',serif;
+    font-size: 4rem; font-weight:300; color: var(--accent-gold); line-height:1;
+  }
+  .rating-stars { color: var(--accent-gold); font-size:1.1rem; margin:4px 0; }
+  .rating-count { color: rgba(245,240,235,0.55); font-size:.82rem; }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .review-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r-lg); padding:32px;
+    transition: all .3s;
+  }
+  .review-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-4px); }
+  .review-stars { color: var(--accent-gold); font-size:.9rem; margin-bottom:16px; }
+  .review-text { color: rgba(245,240,235,0.8); font-size:.92rem; line-height:1.7; margin-bottom:20px; font-style:italic; }
+  .review-author { display:flex; align-items:center; gap:12px; }
+  .review-avatar {
+    width:40px; height:40px; border-radius:50%;
+    background: linear-gradient(135deg, var(--teal-mid), var(--accent-gold));
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-weight:600; font-size:.9rem;
+  }
+  .review-name { color:var(--cream); font-weight:500; font-size:.88rem; }
+  .review-date { color:rgba(245,240,235,0.4); font-size:.75rem; }
+
+  /* ─── TEAM ─── */
+  .team-section {
+    padding: 80px;
+    background: var(--soft-white);
+  }
+  .team-inner { max-width: 1400px; margin:0 auto; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+  }
+  .team-card {
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    transition: all .35s; cursor:pointer;
+  }
+  .team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+  .team-photo {
+    height: 260px; overflow:hidden; position:relative;
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal-mid));
+  }
+  .team-photo img { width:100%; height:100%; object-fit:cover; transition: transform .5s; }
+  .team-card:hover .team-photo img { transform:scale(1.06); }
+  .team-photo-placeholder {
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:4rem; color:rgba(255,255,255,0.3);
+  }
+  .team-info { padding:24px; }
+  .team-name { font-size:1.05rem; font-weight:600; color:var(--deep-teal); margin-bottom:4px; }
+  .team-specialty { font-size:.82rem; color:var(--teal-mid); font-weight:500; margin-bottom:8px; }
+  .team-sub { font-size:.78rem; color:var(--text-muted); line-height:1.5; }
+  .team-badges { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .team-badge {
+    background: rgba(26,92,87,0.08);
+    color: var(--teal);
+    padding:3px 10px; border-radius:50px;
+    font-size:.7rem; font-weight:500;
+  }
+
+  /* ─── PROMO ─── */
+  .promo-section {
+    padding: 80px;
+    background: linear-gradient(135deg, var(--cream) 0%, #EEE8E1 100%);
+  }
+  .promo-inner { max-width:1400px; margin:0 auto; }
+  .promo-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap:24px; }
+  .promo-card {
+    background: var(--soft-white);
+    border-radius: var(--r-lg); overflow:hidden;
+    border:1px solid var(--border);
+    transition: all .3s; cursor:pointer;
+  }
+  .promo-card:hover { transform:translateY(-5px); box-shadow:var(--shadow); }
+  .promo-img {
+    height:180px;
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal-light));
+    position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .promo-img img { width:100%; height:100%; object-fit:cover; }
+  .promo-tag {
+    position:absolute; top:16px; left:16px;
+    background: var(--accent-gold); color:var(--dark);
+    padding:4px 12px; border-radius:50px;
+    font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1px;
+  }
+  .promo-body { padding:24px; }
+  .promo-title { font-size:1rem; font-weight:600; color:var(--deep-teal); margin-bottom:8px; }
+  .promo-desc { font-size:.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:16px; }
+  .promo-price { display:flex; align-items:center; gap:12px; }
+  .promo-new { font-size:1.3rem; font-weight:700; color:var(--teal); }
+  .promo-old { font-size:.9rem; color:var(--text-muted); text-decoration:line-through; }
+
+  /* ─── PROCEDURES PAGE ─── */
+  .procedures-hero {
+    background: linear-gradient(135deg, var(--dark), var(--deep-teal));
+    padding: 140px 80px 80px;
+    position:relative; overflow:hidden;
+  }
+  .procedures-hero::after {
+    content:''; position:absolute; inset:0;
+    background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80');
+    background-size:cover; background-position:center; opacity:.12;
+  }
+  .page-hero-content { position:relative; z-index:1; max-width:1400px; margin:0 auto; }
+  .page-hero-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.5rem,5vw,4rem); font-weight:300;
+    color:var(--cream); margin-bottom:16px;
+  }
+  .page-hero-sub { font-size:1rem; color:rgba(245,240,235,0.65); max-width:500px; line-height:1.7; }
+
+  .procedures-content { padding:60px 80px; max-width:1400px; margin:0 auto; }
+  .proc-category { margin-bottom:48px; }
+  .proc-cat-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.8rem; font-weight:400; color:var(--deep-teal);
+    border-left:3px solid var(--teal-light); padding-left:16px;
+    margin-bottom:24px;
+  }
+  .proc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+  .proc-item {
+    background:var(--cream); border:1px solid var(--border);
+    border-radius:var(--r); padding:24px;
+    cursor:pointer; transition:all .3s;
+  }
+  .proc-item:hover { background:var(--deep-teal); color:white; transform:translateY(-3px); box-shadow:var(--shadow); }
+  .proc-item:hover .proc-item-sub { color:var(--teal-light); }
+  .proc-item-icon { font-size:1.5rem; margin-bottom:12px; }
+  .proc-item-name { font-weight:600; color:var(--deep-teal); margin-bottom:6px; transition:color .3s; }
+  .proc-item:hover .proc-item-name { color:var(--cream); }
+  .proc-item-sub { font-size:.82rem; color:var(--text-muted); transition:color .3s; }
+
+  /* ─── CONTACT PAGE ─── */
+  .contact-page { padding:120px 80px 80px; background:var(--soft-white); }
+  .contact-inner { max-width:1200px; margin:0 auto; }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+  .contact-form-section h2 {
+    font-family:'Cormorant Garamond',serif;
+    font-size:2.4rem; font-weight:300; color:var(--deep-teal); margin-bottom:8px;
+  }
+  .contact-form-section p { color:var(--text-muted); margin-bottom:32px; line-height:1.6; }
+  .form-group { margin-bottom:20px; }
+  .form-group label { display:block; font-size:.82rem; font-weight:600; color:var(--deep-teal); margin-bottom:8px; letter-spacing:.3px; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width:100%; padding:14px 18px;
+    border:1.5px solid var(--border);
+    border-radius:12px; font-family:inherit; font-size:.9rem;
+    background:var(--cream); color:var(--text-main);
+    transition:all .3s; outline:none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color:var(--teal-light); box-shadow:0 0 0 3px rgba(74,173,166,.12); }
+  .form-group textarea { height:120px; resize:vertical; }
+
+  .contact-info-section { }
+  .contact-info-block {
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal));
+    border-radius:var(--r-lg); padding:40px;
+    color:white; margin-bottom:20px;
+  }
+  .contact-info-block h3 { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; margin-bottom:24px; color:var(--cream); }
+  .contact-info-item { display:flex; gap:16px; margin-bottom:20px; align-items:flex-start; }
+  .contact-info-icon {
+    width:40px; height:40px; border-radius:10px;
+    background:rgba(74,173,166,0.2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--teal-light); font-size:1rem; flex-shrink:0;
+  }
+  .contact-info-label { font-size:.75rem; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+  .contact-info-val { font-size:.92rem; color:rgba(255,255,255,.9); line-height:1.5; }
+
+  .hours-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .hours-item { background:rgba(255,255,255,0.08); border-radius:8px; padding:10px 14px; }
+  .hours-day { font-size:.75rem; color:rgba(255,255,255,.5); margin-bottom:2px; }
+  .hours-time { font-size:.88rem; color:var(--cream); font-weight:500; }
+
+  .map-container { border-radius:var(--r-lg); overflow:hidden; height:260px; border:1px solid var(--border); }
+  .map-container iframe { width:100%; height:100%; border:none; }
+
+  /* ─── SCHEDULE ASSISTANT ─── */
+  .schedule-page { padding:120px 80px 80px; background:var(--soft-white); }
+  .schedule-inner { max-width:900px; margin:0 auto; }
+  .schedule-steps { display:flex; gap:8px; margin-bottom:48px; }
+  .step-dot {
+    flex:1; height:4px; border-radius:4px;
+    background: var(--border);
+    transition: background .3s;
+  }
+  .step-dot.done { background: var(--teal-light); }
+  .step-dot.active { background: var(--accent-gold); }
+
+  .schedule-step { display:none; }
+  .schedule-step.active { display:block; animation:fadeIn .4s ease; }
+
+  .step-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:2rem; font-weight:300; color:var(--deep-teal); margin-bottom:8px;
+  }
+  .step-sub { color:var(--text-muted); margin-bottom:32px; }
+
+  .spec-options { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+  .spec-option {
+    border:2px solid var(--border); border-radius:var(--r);
+    padding:20px; cursor:pointer; text-align:center; transition:all .3s;
+  }
+  .spec-option:hover { border-color:var(--teal-light); background:rgba(74,173,166,.06); }
+  .spec-option.selected { border-color:var(--teal); background:var(--deep-teal); color:white; }
+  .spec-option i { font-size:1.8rem; margin-bottom:10px; color:var(--teal-mid); }
+  .spec-option.selected i { color:var(--teal-light); }
+  .spec-option span { display:block; font-size:.85rem; font-weight:500; }
+
+  .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:24px; }
+  .cal-day-name { text-align:center; font-size:.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; padding:8px 0; }
+  .cal-day {
+    text-align:center; padding:10px 6px; border-radius:10px;
+    font-size:.85rem; cursor:pointer; border:1px solid transparent;
+    transition:all .25s;
+  }
+  .cal-day.empty { opacity:0; pointer-events:none; }
+  .cal-day.past { color:rgba(0,0,0,.25); pointer-events:none; }
+  .cal-day.available:hover { background:rgba(74,173,166,.12); border-color:var(--teal-light); color:var(--teal); }
+  .cal-day.selected { background:var(--deep-teal); color:white; border-color:var(--teal); }
+  .cal-day.today { border-color:var(--accent-gold); color:var(--accent-gold); font-weight:700; }
+
+  .time-slots { display:flex; flex-wrap:wrap; gap:10px; }
+  .time-slot {
+    padding:10px 20px; border-radius:50px;
+    border:1.5px solid var(--border);
+    font-size:.85rem; cursor:pointer; transition:all .25s;
+  }
+  .time-slot:hover { border-color:var(--teal-light); color:var(--teal); }
+  .time-slot.selected { background:var(--teal); color:white; border-color:transparent; }
+  .time-slot.taken { opacity:.4; pointer-events:none; background:var(--cream); }
+
+  .confirm-card {
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal));
+    border-radius:var(--r-lg); padding:40px; color:white; margin-bottom:24px;
+  }
+  .confirm-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.1); }
+  .confirm-row:last-child { border-bottom:none; }
+  .confirm-label { font-size:.8rem; color:rgba(255,255,255,.55); }
+  .confirm-val { font-weight:500; color:var(--cream); }
+
+  /* ─── CHAT WIDGET ─── */
+  .chat-bubble {
+    position:fixed; bottom:28px; right:28px; z-index:9999;
+    width:62px; height:62px; border-radius:50%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    border:none; cursor:pointer; color:white; font-size:1.5rem;
+    box-shadow:0 8px 30px rgba(26,92,87,0.4);
+    transition: all .3s; display:flex; align-items:center; justify-content:center;
+  }
+  .chat-bubble:hover { transform:scale(1.08); box-shadow:0 12px 40px rgba(26,92,87,0.5); }
+  .chat-bubble .badge {
+    position:absolute; top:2px; right:2px;
+    width:16px; height:16px; border-radius:50%;
+    background: var(--accent-rose); color:white; font-size:.6rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    border:2px solid var(--soft-white);
+  }
+
+  .chat-panel {
+    position:fixed; bottom:104px; right:28px; z-index:9998;
+    width:360px; max-height:520px;
+    background: var(--soft-white);
+    border-radius:24px;
+    box-shadow: var(--shadow-strong);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+    transform: scale(.95) translateY(10px);
+    opacity:0; pointer-events:none;
+    transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .chat-panel.open { transform:none; opacity:1; pointer-events:all; }
+  .chat-header {
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal));
+    padding:20px; display:flex; align-items:center; gap:14px;
+  }
+  .chat-avatar {
+    width:40px; height:40px; border-radius:50%;
+    background:rgba(74,173,166,.25);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--teal-light); font-size:1.1rem;
+  }
+  .chat-header-info h4 { color:var(--cream); font-size:.95rem; font-weight:600; }
+  .chat-online { display:flex; align-items:center; gap:6px; font-size:.75rem; color:rgba(245,240,235,.6); }
+  .chat-online::before { content:''; width:6px; height:6px; border-radius:50%; background:#4ADE80; }
+  .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .msg { max-width:80%; padding:10px 14px; border-radius:16px; font-size:.85rem; line-height:1.5; }
+  .msg.bot { background:var(--cream); color:var(--text-main); border-bottom-left-radius:4px; align-self:flex-start; }
+  .msg.user { background:var(--teal); color:white; border-bottom-right-radius:4px; align-self:flex-end; }
+  .chat-quick { display:flex; flex-wrap:wrap; gap:6px; padding:0 16px 12px; }
+  .chat-quick-btn {
+    background:rgba(26,92,87,.08); border:1px solid var(--border);
+    color:var(--teal); padding:6px 12px; border-radius:50px;
+    font-size:.75rem; cursor:pointer; transition:all .2s;
+  }
+  .chat-quick-btn:hover { background:var(--teal); color:white; border-color:transparent; }
+  .chat-input-row { display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--border); }
+  .chat-input {
+    flex:1; padding:10px 14px; border:1.5px solid var(--border);
+    border-radius:50px; font-size:.85rem; outline:none;
+    font-family:inherit; background:var(--cream); transition:border .3s;
+  }
+  .chat-input:focus { border-color:var(--teal-light); }
+  .chat-send {
+    width:38px; height:38px; border-radius:50%;
+    background:var(--teal); color:white; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; font-size:.9rem;
+    transition: all .25s;
+  }
+  .chat-send:hover { background:var(--teal-mid); }
+
+  /* ─── LEGAL / ETHICS ─── */
+  .legal-page { padding:120px 80px 80px; }
+  .legal-inner { max-width:900px; margin:0 auto; }
+  .legal-page h1 { font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--deep-teal); margin-bottom:8px; }
+  .legal-page .meta { color:var(--text-muted); font-size:.85rem; margin-bottom:48px; }
+  .legal-section { margin-bottom:40px; }
+  .legal-section h2 { font-size:1.1rem; font-weight:700; color:var(--deep-teal); margin-bottom:12px; text-transform:uppercase; letter-spacing:.5px; }
+  .legal-section p { color:#4a5e5d; line-height:1.8; font-size:.92rem; margin-bottom:10px; }
+
+  /* ─── ABOUT ─── */
+  .about-hero {
+    background: linear-gradient(135deg, var(--deep-teal), #0A3530);
+    padding: 140px 80px 80px; position:relative; overflow:hidden;
+  }
+  .about-hero img-bg {
+    position:absolute; inset:0; background-image:url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1600&q=80');
+    background-size:cover; opacity:.12;
+  }
+  .about-content { padding:60px 80px; max-width:1400px; margin:0 auto; }
+  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; margin-bottom:60px; }
+  .about-text h2 { font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:300; color:var(--deep-teal); margin-bottom:20px; }
+  .about-text p { color:var(--text-muted); line-height:1.8; margin-bottom:16px; }
+  .about-img { border-radius:var(--r-lg); overflow:hidden; height:400px; }
+  .about-img img { width:100%; height:100%; object-fit:cover; }
+  .values-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+  .value-card {
+    background:var(--cream); border:1px solid var(--border);
+    border-radius:var(--r); padding:28px; text-align:center;
+  }
+  .value-icon { font-size:2rem; margin-bottom:12px; }
+  .value-title { font-weight:700; color:var(--deep-teal); margin-bottom:8px; }
+  .value-text { font-size:.82rem; color:var(--text-muted); line-height:1.5; }
+
+  /* ─── PAYMENTS ─── */
+  .payment-page { padding:120px 80px 80px; background:var(--soft-white); }
+  .payment-inner { max-width:900px; margin:0 auto; }
+  .payment-methods { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin:32px 0; }
+  .pay-method {
+    background:var(--cream); border:1px solid var(--border);
+    border-radius:var(--r); padding:24px; text-align:center; cursor:pointer;
+    transition:all .3s;
+  }
+  .pay-method:hover { border-color:var(--teal-light); transform:translateY(-3px); box-shadow:var(--shadow); }
+  .pay-method i { font-size:2rem; color:var(--teal-mid); margin-bottom:10px; }
+  .pay-method span { display:block; font-size:.88rem; font-weight:500; color:var(--deep-teal); }
+  .pay-secure { display:flex; align-items:center; gap:10px; color:var(--teal); font-size:.82rem; margin-top:16px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    padding: 60px 80px 32px;
+  }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; max-width:1400px; margin:0 auto; }
+  .footer-brand {}
+  .footer-logo {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.8rem; color:var(--cream); font-weight:300; margin-bottom:12px;
+  }
+  .footer-logo span { color:var(--teal-light); font-style:italic; }
+  .footer-tagline { color:rgba(255,255,255,.4); font-size:.82rem; line-height:1.6; max-width:280px; margin-bottom:24px; }
+  .footer-social { display:flex; gap:10px; }
+  .social-btn {
+    width:38px; height:38px; border-radius:10px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    display:flex; align-items:center; justify-content:center;
+    color:rgba(255,255,255,.6); cursor:pointer; transition:all .3s;
+    text-decoration:none; font-size:.9rem;
+  }
+  .social-btn:hover { background:var(--teal); color:white; border-color:transparent; }
+  .footer-col h4 { color:rgba(255,255,255,.35); font-size:.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px; }
+  .footer-col a { display:block; color:rgba(255,255,255,.6); text-decoration:none; font-size:.85rem; margin-bottom:8px; cursor:pointer; transition:color .2s; }
+  .footer-col a:hover { color:var(--teal-light); }
+  .footer-bottom {
+    max-width:1400px; margin:40px auto 0;
+    padding-top:24px; border-top:1px solid rgba(255,255,255,.08);
+    display:flex; justify-content:space-between; align-items:center;
+    color:rgba(255,255,255,.3); font-size:.78rem;
+  }
+  .footer-ig {
+    display:flex; align-items:center; gap:8px;
+    color:rgba(255,255,255,.5); text-decoration:none; font-size:.82rem;
+    padding:8px 14px; border-radius:50px; border:1px solid rgba(255,255,255,.1);
+    transition:all .3s;
+  }
+  .footer-ig:hover { background:#E1306C; color:white; border-color:transparent; }
+
+  /* ─── BACK BTN ─── */
+  .back-btn {
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--teal-mid); text-decoration:none; font-size:.85rem;
+    font-weight:500; cursor:pointer; margin-bottom:24px;
+    transition:color .2s;
+  }
+  .back-btn:hover { color:var(--teal); }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:1024px) {
+    .hero-content, .hero-stats { padding-left:40px; padding-right:40px; }
+    .quick-section, .reviews-section, .team-section, .promo-section,
+    .contact-page, .schedule-page, .legal-page, .payment-page, .about-content { padding-left:40px; padding-right:40px; }
+    .procedures-hero, .procedures-content { padding-left:40px; padding-right:40px; }
+    footer { padding-left:40px; padding-right:40px; }
+    .footer-grid { grid-template-columns:1fr 1fr; }
+    .contact-grid, .about-grid { grid-template-columns:1fr; }
+  }
+  @media(max-width:768px) {
+    nav { padding:0 20px; }
+    .nav-links { display:none; }
+    .hamburger { display:block; }
+    .hero-content, .hero-stats { padding-left:24px; padding-right:24px; }
+    .hero-stats { flex-wrap:wrap; }
+    .hero-stat { border-right:none; border-bottom:1px solid rgba(255,255,255,.1); min-width:45%; }
+    .quick-section, .reviews-section, .team-section, .promo-section,
+    .contact-page, .schedule-page, .legal-page, .payment-page, .about-content { padding:40px 24px; }
+    .procedures-hero, .procedures-content { padding:100px 24px 40px; }
+    footer { padding:40px 24px 24px; }
+    .footer-grid { grid-template-columns:1fr; }
+    .chat-panel { right:16px; left:16px; width:auto; }
+  }
+
+  /* ─── MISC UTILS ─── */
+  .flex-center { display:flex; align-items:center; justify-content:center; }
+  .mt-8 { margin-top:8px; }
+  .mt-16 { margin-top:16px; }
+  .mt-32 { margin-top:32px; }
+  .text-center { text-align:center; }
+  .gap-header { margin-bottom:48px; }
+
+  .nav-mobile { display:none; }
+  .nav-mobile.open {
+    display:flex; flex-direction:column;
+    position:fixed; top:72px; left:0; right:0;
+    background:rgba(13,61,58,.98); padding:20px;
+    z-index:999; border-bottom:1px solid rgba(74,173,166,.2);
+  }
+  .nav-mobile a {
+    color:rgba(245,240,235,.8); text-decoration:none; font-size:.95rem;
+    padding:12px 16px; border-radius:8px; cursor:pointer; transition:all .2s;
+  }
+  .nav-mobile a:hover { background:rgba(74,173,166,.15); color:var(--teal-light); }
+
+  .success-message {
+    background:linear-gradient(135deg,#d1fae5,#a7f3d0);
+    border:1px solid #6ee7b7; border-radius:var(--r);
+    padding:20px 24px; color:#065f46; margin-top:16px;
+    display:none;
+  }
+  .success-message.show { display:flex; align-items:center; gap:12px; animation:fadeIn .4s ease; }
+
+  .page-content-wrapper { padding-top:72px; }
+
+  /* ─── NAV PATIENT BUTTON ─── */
+  .nav-patient-btn {
+    position: relative;
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(74,173,166,0.15);
+    border: 1.5px solid rgba(74,173,166,0.35);
+    color: var(--teal-light);
+    padding: 8px 16px; border-radius: 50px;
+    font-size: .82rem; font-weight: 600;
+    cursor: pointer; transition: all .25s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .2px;
+  }
+  .nav-patient-btn:hover { background: rgba(74,173,166,0.28); border-color: var(--teal-light); transform: translateY(-1px); }
+  .nav-patient-btn.logged-in { background: rgba(201,169,110,0.18); border-color: rgba(201,169,110,0.5); color: var(--accent-gold); }
+  .nav-patient-btn.logged-in:hover { background: rgba(201,169,110,0.28); }
+  .nav-patient-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4ADE80;
+    position: absolute; top: 3px; right: 3px;
+    border: 2px solid var(--deep-teal);
+  }
+
+  /* ─── OVERLAY ─── */
+  .patient-overlay {
+    position: fixed; inset: 0; z-index: 1099;
+    background: rgba(10,26,25,0.55);
+    backdrop-filter: blur(4px);
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .patient-overlay.open { opacity: 1; pointer-events: all; }
+
+  /* ─── PATIENT PANEL — PANTALLA COMPLETA SIN SCROLL ─── */
+  .patient-panel {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1100;
+    width: 100vw; max-width: 100vw;
+    background: var(--soft-white);
+    box-shadow: none;
+    display: flex; flex-direction: column;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.4,0,.2,1);
+    overflow: hidden;
+  }
+  .patient-panel.open { transform: translateY(0); }
+
+  /* ── login panel centrado ── */
+  #loginView {
+    display: flex; flex-direction: column;
+    height: 100%; overflow: hidden;
+  }
+  #loginView .pp-header {
+    flex-shrink: 0;
+  }
+  #loginView .pp-body {
+    flex: 1; overflow-y: auto;
+    max-width: 520px; width: 100%;
+    margin: 0 auto; padding: 40px 32px;
+  }
+
+  .pp-header {
+    padding: 22px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .pp-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300; color: var(--deep-teal);
+  }
+  .pp-logo span { color: var(--teal-light); font-style: italic; }
+  .pp-close {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: none; border: 1.5px solid var(--border);
+    color: var(--text-muted); cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .pp-close:hover { background: var(--deep-teal); color: white; border-color: transparent; }
+
+  .pp-body { flex: 1; overflow-y: auto; padding: 40px 32px; }
+
+  .pp-icon-wrap {
+    width: 80px; height: 80px; border-radius: 24px;
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal-mid));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--teal-light); font-size: 2.2rem;
+    margin: 0 auto 24px;
+  }
+  .pp-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem; font-weight: 300; color: var(--deep-teal);
+    text-align: center; margin-bottom: 8px;
+  }
+  .pp-sub { text-align: center; color: var(--text-muted); font-size: 1rem; margin-bottom: 28px; line-height: 1.6; }
+
+  .pp-tabs {
+    display: flex; background: var(--cream); border-radius: 50px;
+    padding: 5px; margin-bottom: 28px; gap: 4px;
+  }
+  .pp-tab {
+    flex: 1; padding: 13px; border-radius: 50px;
+    background: none; border: none; cursor: pointer;
+    font-size: .92rem; font-weight: 600; color: var(--text-muted);
+    transition: all .25s; font-family: 'DM Sans', sans-serif;
+  }
+  .pp-tab.active { background: var(--deep-teal); color: white; }
+
+  .pp-field { margin-bottom: 20px; }
+  .pp-field label { display: block; font-size: .88rem; font-weight: 700; color: var(--deep-teal); margin-bottom: 9px; letter-spacing: .3px; }
+  .pp-field input {
+    width: 100%; padding: 15px 20px;
+    border: 1.5px solid var(--border); border-radius: 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem;
+    background: white; color: var(--text-main);
+    outline: none; transition: border .25s;
+  }
+  .pp-field input:focus { border-color: var(--teal-light); box-shadow: 0 0 0 4px rgba(74,173,166,.1); }
+
+  .pp-btn {
+    width: 100%; padding: 17px;
+    background: linear-gradient(135deg, var(--deep-teal), var(--teal));
+    color: white; border: none; border-radius: 16px;
+    font-size: 1.05rem; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    transition: all .3s; font-family: 'DM Sans', sans-serif;
+    margin-bottom: 18px; letter-spacing: .3px;
+  }
+  .pp-btn:hover { background: linear-gradient(135deg, var(--teal), var(--teal-mid)); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(26,92,87,0.3); }
+
+  .pp-divider { text-align: center; position: relative; margin: 20px 0; }
+  .pp-divider::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); }
+  .pp-divider span { background: var(--soft-white); padding: 0 14px; position: relative; font-size: .88rem; color: var(--text-muted); }
+
+  .pp-social-btn {
+    padding: 14px; border: 1.5px solid var(--border); border-radius: 14px;
+    background: white; cursor: pointer; font-size: .95rem;
+    font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all .25s; font-family: 'DM Sans', sans-serif; color: var(--text-main);
+  }
+  .pp-social-btn:hover { border-color: var(--teal-light); background: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,61,58,.08); }
+
+  .pp-error {
+    color: #dc2626; font-size: .88rem; margin-bottom: 14px;
+    padding: 12px 16px; border-radius: 10px; display: none;
+  }
+  .pp-error.show { display: block; background: #fef2f2; border: 1px solid #fecaca; }
+
+  /* ══════════════════════════════════════
+     PORTAL LOGUEADO — LAYOUT COMPLETO
+  ══════════════════════════════════════ */
+  #portalView {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Header del portal */
+  .portal-top-bar {
+    background: linear-gradient(135deg, var(--deep-teal) 0%, var(--teal) 100%);
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 0;
+    height: 72px; flex-shrink: 0;
+    border-bottom: 1px solid rgba(74,173,166,.2);
+  }
+  .portal-user-info {
+    display: flex; align-items: center; gap: 16px; flex: 1;
+  }
+  .portal-avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal-light), var(--accent-gold));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 1.1rem; flex-shrink: 0;
+    border: 2.5px solid rgba(255,255,255,.3);
+  }
+  .portal-user-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; color: var(--cream); font-weight: 400; line-height:1;
+  }
+  .portal-user-id {
+    font-size: .72rem; color: rgba(245,240,235,.5); margin-top: 3px;
+  }
+
+  /* Tabs horizontales compactos */
+  .portal-tabs {
+    display: flex; background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0; overflow-x: auto;
+  }
+  .portal-tabs::-webkit-scrollbar { display: none; }
+  .ptab {
+    flex: 1; min-width: 100px; padding: 14px 12px;
+    background: none; border: none; border-bottom: 3px solid transparent;
+    cursor: pointer; font-size: .8rem; font-weight: 700;
+    color: var(--text-muted); transition: all .25s;
+    display: flex; flex-direction: row; align-items: center;
+    justify-content: center; gap: 9px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .4px; text-transform: uppercase;
+    margin-bottom: -2px; white-space: nowrap;
+  }
+  .ptab i { font-size: 1rem; }
+  .ptab.active { color: var(--teal); border-bottom-color: var(--teal); background: rgba(74,173,166,.06); }
+  .ptab:hover:not(.active) { color: var(--teal-mid); background: rgba(74,173,166,.04); }
+
+  /* Área de contenido — grid de dos columnas, SIN overflow-y */
+  .portal-content {
+    flex: 1;
+    overflow: hidden;   /* <-- clave: sin scroll */
+    padding: 0;
+    display: flex;
+  }
+
+  /* columna izquierda y derecha */
+  .portal-col {
+    flex: 1; padding: 28px 32px;
+    overflow: hidden;   /* sin scroll en columnas */
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .portal-col + .portal-col {
+    border-left: 1px solid var(--border);
+  }
+
+  /* cards sin margin-bottom (el gap del flex lo maneja) */
+  .portal-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    transition: all .2s; cursor: default;
+    flex-shrink: 0;
+  }
+  .portal-card:hover { box-shadow: 0 4px 20px rgba(13,61,58,.09); }
+  .portal-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .portal-card-title { font-weight: 700; font-size: 1rem; color: var(--deep-teal); }
+  .portal-card-sub { font-size: .84rem; color: var(--text-muted); margin-top: 3px; }
+
+  .portal-badge {
+    padding: 4px 12px; border-radius: 50px;
+    font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .8px;
+    white-space: nowrap; flex-shrink: 0; margin-left: 8px;
+  }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-blue  { background: #dbeafe; color: #1e40af; }
+  .badge-gold  { background: rgba(201,169,110,.22); color: #92400e; }
+  .badge-rose  { background: #fce7f3; color: #9d174d; }
+  .badge-gray  { background: rgba(26,92,87,.1); color: var(--text-muted); }
+
+  .portal-section-title {
+    font-size: .72rem; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--text-muted);
+    padding-bottom: 8px; border-bottom: 2px solid var(--border);
+    flex-shrink: 0; margin: 0;
+  }
+
+  .portal-alert {
+    background: linear-gradient(135deg, rgba(74,173,166,.1), rgba(26,92,87,.06));
+    border: 1.5px solid rgba(74,173,166,.28);
+    border-radius: 14px; padding: 16px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .portal-alert i { color: var(--teal-mid); font-size: 1.1rem; margin-top: 1px; }
+  .portal-alert-text { font-size: .9rem; color: var(--text-main); line-height: 1.55; }
+  .portal-alert-text strong { color: var(--deep-teal); display: block; margin-bottom: 2px; }
+
+  /* stat row inline en dos columnas */
+  .portal-stat-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; flex-shrink: 0;
+  }
+  .portal-stat {
+    background: var(--cream); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 12px; text-align: center;
+  }
+  .portal-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; font-weight: 300; color: var(--deep-teal); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .portal-stat-label { font-size: .78rem; color: var(--text-muted); font-weight: 500; }
+
+  .progress-bar-wrap { background: rgba(26,92,87,.1); border-radius: 50px; height: 7px; margin-top: 8px; }
+  .progress-bar { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--teal-light), var(--accent-gold)); }
+
+  .result-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+  }
+  .result-item:last-child { border-bottom: none; }
+  .result-name { color: var(--text-main); font-weight: 600; }
+  .result-val { font-weight: 800; font-size: .92rem; }
+  .result-val.normal { color: #059669; }
+  .result-val.high   { color: #dc2626; }
+  .result-val.low    { color: #d97706; }
+  .result-range { font-size: .75rem; color: var(--text-muted); text-align: right; margin-top: 2px; }
+
+  /* acción rápida */
+  .pp-action-btn {
+    width: 100%; padding: 14px 18px;
+    background: var(--cream); border: 1.5px solid var(--border);
+    border-radius: 14px; text-align: left; cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+    font-size: .95rem; font-weight: 600; color: var(--deep-teal);
+    transition: all .22s; font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+  }
+  .pp-action-btn i {
+    color: var(--teal-mid); width: 36px; height: 36px;
+    background: rgba(74,173,166,.12); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .95rem; flex-shrink: 0;
+  }
+  .pp-action-btn:hover { border-color: var(--teal-light); background: rgba(74,173,166,.05); transform: translateX(4px); }
+  .pp-action-btn .arrow { margin-left: auto; color: var(--text-muted); font-size: .85rem; }
+
+  /* barra inferior con cerrar sesión */
+  .portal-bottom-bar {
+    padding: 14px 40px;
+    border-top: 1px solid var(--border);
+    background: white;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .portal-bottom-hint { font-size: .78rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+  .portal-logout-btn {
+    padding: 12px 28px;
+    background: none; border: 2px solid rgba(212,132,138,.4);
+    color: var(--accent-rose); border-radius: 50px;
+    cursor: pointer; font-size: .92rem; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+    transition: all .25s; font-family: 'DM Sans', sans-serif;
+  }
+  .portal-logout-btn:hover { background: rgba(212,132,138,.1); border-color: var(--accent-rose); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')">Vita<span>Center</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">Inicio</a></li>
+    <li><a onclick="showPage('procedures')" id="nav-procedures">Procedimientos</a></li>
+    <li><a onclick="showPage('team')" id="nav-team">Profesionales</a></li>
+    <li><a onclick="showPage('news')" id="nav-news">Novedades</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">Nosotros</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contacto</a></li>
+    <li><a onclick="showPage('payments')" id="nav-payments">Pagos</a></li>
+    <li><a onclick="showPage('schedule')" class="nav-cta" id="nav-schedule">Reservar Turno</a></li>
+    <li>
+      <button class="nav-patient-btn" id="navPatientBtn" onclick="toggleLoginPanel()" aria-label="Acceso paciente">
+        <i class="fa-solid fa-user-circle" id="navPatientIcon"></i>
+        <span id="navPatientLabel">Mi Cuenta</span>
+        <span class="nav-patient-dot" id="navPatientDot" style="display:none"></span>
+      </button>
+    </li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══ LOGIN / PATIENT PANEL OVERLAY ══ -->
+<div class="patient-overlay" id="patientOverlay" onclick="closeLoginPanel()"></div>
+
+<!-- LOGIN PANEL -->
+<div class="patient-panel" id="patientPanel">
+  <!-- LOGIN VIEW -->
+  <div id="loginView">
+    <div class="pp-header">
+      <div class="pp-logo">Vita<span>Center</span></div>
+      <button class="pp-close" onclick="closeLoginPanel()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="pp-body">
+      <div class="pp-icon-wrap"><i class="fa-solid fa-user-shield"></i></div>
+      <h2 class="pp-title">Acceso Paciente</h2>
+      <p class="pp-sub">Ingresá para ver tu historial, turnos y resultados.</p>
+
+      <div class="pp-tabs">
+        <button class="pp-tab active" onclick="switchAuthTab('login',this)">Iniciar Sesión</button>
+        <button class="pp-tab" onclick="switchAuthTab('register',this)">Registrarme</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="authLogin">
+        <div class="pp-field">
+          <label>Email / DNI</label>
+          <input type="text" id="loginUser" placeholder="email@ejemplo.com o DNI">
+        </div>
+        <div class="pp-field">
+          <label>Contraseña</label>
+          <div style="position:relative;">
+            <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+            <button onclick="togglePwd('loginPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:.9rem;"><i class="fa-regular fa-eye"></i></button>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:20px;">
+          <span style="font-size:.78rem;color:var(--teal-mid);cursor:pointer;" onclick="alert('Te enviaremos un link de recuperación a tu email registrado.')">¿Olvidaste tu contraseña?</span>
+        </div>
+        <div class="pp-error" id="loginError"></div>
+        <button class="pp-btn" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Ingresar</button>
+        <div class="pp-divider"><span>o ingresá con</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <button class="pp-social-btn" onclick="doLogin()"><i class="fa-brands fa-google" style="color:#EA4335;"></i> Google</button>
+          <button class="pp-social-btn" onclick="doLogin()"><i class="fa-brands fa-facebook-f" style="color:#1877F2;"></i> Facebook</button>
+        </div>
+        <p style="font-size:.75rem;color:var(--text-muted);text-align:center;margin-top:16px;line-height:1.5;">Al ingresar aceptás nuestros <span onclick="showPage('legal');closeLoginPanel();" style="color:var(--teal-mid);cursor:pointer;">Términos y Política de Privacidad</span></p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="authRegister" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="pp-field"><label>Nombre</label><input type="text" id="regNombre" placeholder="Tu nombre"></div>
+          <div class="pp-field"><label>Apellido</label><input type="text" id="regApellido" placeholder="Tu apellido"></div>
+        </div>
+        <div class="pp-field"><label>Email</label><input type="email" id="regEmail" placeholder="email@ejemplo.com"></div>
+        <div class="pp-field"><label>DNI</label><input type="text" id="regDni" placeholder="Número de documento"></div>
+        <div class="pp-field">
+          <label>Contraseña</label>
+          <input type="password" id="regPass" placeholder="Mínimo 8 caracteres">
+        </div>
+        <div class="pp-field"><label>Fecha de nacimiento</label><input type="date" id="regFecha"></div>
+        <div class="pp-error" id="registerError"></div>
+        <button class="pp-btn" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Crear cuenta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTAL PACIENTE (post-login) — pantalla completa sin scroll -->
+  <div id="portalView" style="display:none;flex-direction:column;height:100%;overflow:hidden;">
+
+    <!-- Barra superior del portal -->
+    <div class="portal-top-bar">
+      <div class="portal-user-info">
+        <div class="portal-avatar" id="portalAvatar">MG</div>
+        <div>
+          <div class="portal-user-name" id="portalName">María García</div>
+          <div class="portal-user-id">Paciente activa · <span id="portalId">ID: VC-00421</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="font-size:.78rem;color:rgba(245,240,235,.45);text-align:right;">
+          <div><i class="fa-regular fa-clock" style="margin-right:5px;"></i>Lun–Vie 8:00–20:00</div>
+          <div style="margin-top:2px;"><i class="fa-solid fa-phone" style="margin-right:5px;"></i>0800-333-8482</div>
+        </div>
+        <button class="pp-close" onclick="closeLoginPanel()" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);flex-shrink:0;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <!-- Tabs de navegación -->
+    <div class="portal-tabs">
+      <button class="ptab active" onclick="switchPortalTab('inicio',this)"><i class="fa-solid fa-house"></i>Inicio</button>
+      <button class="ptab" onclick="switchPortalTab('turnos',this)"><i class="fa-regular fa-calendar-check"></i>Mis Turnos</button>
+      <button class="ptab" onclick="switchPortalTab('historial',this)"><i class="fa-solid fa-file-medical"></i>Historial</button>
+      <button class="ptab" onclick="switchPortalTab('resultados',this)"><i class="fa-solid fa-flask-vial"></i>Resultados</button>
+      <button class="ptab" onclick="switchPortalTab('perfil',this)"><i class="fa-solid fa-user-gear"></i>Mi Perfil</button>
+    </div>
+
+    <!-- Contenido dinámico en dos columnas, sin scroll -->
+    <div class="portal-content" id="portalContent"></div>
+
+    <!-- Barra inferior -->
+    <div class="portal-bottom-bar">
+      <div class="portal-bottom-hint">
+        <i class="fa-solid fa-shield-halved" style="color:var(--teal-mid);"></i>
+        Sesión cifrada · Datos protegidos bajo Ley 25.326
+      </div>
+      <button class="portal-logout-btn" onclick="doLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="nav-mobile" id="mobileNav">
+  <a onclick="showPage('home');toggleMobile()">Inicio</a>
+  <a onclick="showPage('procedures');toggleMobile()">Procedimientos</a>
+  <a onclick="showPage('team');toggleMobile()">Profesionales</a>
+  <a onclick="showPage('news');toggleMobile()">Novedades</a>
+  <a onclick="showPage('about');toggleMobile()">Nosotros</a>
+  <a onclick="showPage('contact');toggleMobile()">Contacto</a>
+  <a onclick="showPage('payments');toggleMobile()">Pagos</a>
+  <a onclick="showPage('legal');toggleMobile()">Legales</a>
+  <a onclick="showPage('schedule');toggleMobile()" style="color:var(--accent-gold)">Reservar Turno</a>
+  <a onclick="toggleLoginPanel();toggleMobile()" style="color:var(--teal-light);display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-user-circle"></i> Mi Cuenta</a>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section id="home" style="min-height:100vh; background:linear-gradient(135deg,#0A1A19 0%,#0D3D3A 55%,#0D4A45 100%); position:relative; overflow:hidden; display:flex; flex-direction:column;">
+    <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1920&q=80')"></div>
+    <div class="hero-mesh"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fa-solid fa-circle-check"></i>Centro certificado ISO 9001</div>
+      <h1 class="hero-title">
+        Tu salud &amp; bienestar,<br>
+        en manos <em>expertas</em><br>
+        que <strong>transforman</strong> vidas.
+      </h1>
+      <p class="hero-sub">Tecnología de vanguardia, profesionales certificados y una experiencia de atención única. Tu bienestar es nuestra razón de ser.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('schedule')"><i class="fa-regular fa-calendar-check"></i> Reservar Turno</button>
+        <button class="btn-outline" onclick="showPage('procedures')"><i class="fa-solid fa-circle-play"></i> Ver Procedimientos</button>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">18+</div><div class="hero-stat-label">Años de trayectoria</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">12K+</div><div class="hero-stat-label">Pacientes satisfechos</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">48</div><div class="hero-stat-label">Especialistas</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4.9 ★</div><div class="hero-stat-label">Calificación promedio</div></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <div style="background:var(--cream); padding:20px 0 0; width:100%;">
+  <div class="quick-section">
+    <div class="section-tag">Nuestros servicios</div>
+    <h2 class="section-title">Todo lo que necesitás,<br><em>en un solo lugar</em></h2>
+    <div class="services-grid">
+      <div class="service-card" onclick="showPage('procedures')">
+        <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
+        <div class="service-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <h3>Odontología</h3>
+        <p>Implantes, ortodoncia, blanqueamiento, cirugía maxilofacial y estética dental de alta precisión.</p>
+      </div>
+      <div class="service-card" onclick="showPage('procedures')">
+        <div class="service-icon"><i class="fa-solid fa-eye"></i></div>
+        <div class="service-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <h3>Oftalmología</h3>
+        <p>Cirugía refractiva, tratamiento de glaucoma, cataratas y diagnóstico avanzado de retina.</p>
+      </div>
+      <div class="service-card" onclick="showPage('procedures')">
+        <div class="service-icon"><i class="fa-solid fa-spa"></i></div>
+        <div class="service-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <h3>Estética & Belleza</h3>
+        <p>Medicina estética, tratamientos corporales, rejuvenecimiento facial y terapias premium.</p>
+      </div>
+      <div class="service-card" onclick="showPage('procedures')">
+        <div class="service-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div class="service-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <h3>Clínica General</h3>
+        <p>Chequeos preventivos, laboratorio, diagnóstico integral y seguimiento personalizado.</p>
+      </div>
+      <div class="service-card" onclick="showPage('procedures')">
+        <div class="service-icon"><i class="fa-solid fa-person-running"></i></div>
+        <div class="service-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <h3>Fisioterapia</h3>
+        <p>Rehabilitación, kinesiología deportiva, osteopatía y terapia manual especializada.</p>
+      </div>
+      <div class="service-card" onclick="showPage('procedures')">
+        <div class="service-icon"><i class="fa-solid fa-brain"></i></div>
+        <div class="service-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <h3>Salud Mental</h3>
+        <p>Psicología clínica, psiquiatría, terapia individual, de pareja y grupal.</p>
+      </div>
+    </div>
+
+    <!-- QUICK ACCESS BUTTONS -->
+    <div style="margin-top:48px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+      <button onclick="showPage('schedule')" style="background:var(--deep-teal);color:white;padding:14px 28px;border-radius:50px;border:none;cursor:pointer;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:8px;transition:all .3s;" onmouseover="this.style.background='#0F4F4B'" onmouseout="this.style.background='var(--deep-teal)'">
+        <i class="fa-regular fa-calendar-plus"></i> Sacar Turno Online
+      </button>
+      <button onclick="openChat()" style="background:var(--teal-light);color:white;padding:14px 28px;border-radius:50px;border:none;cursor:pointer;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:8px;transition:all .3s;" onmouseover="this.style.background='var(--teal-mid)'" onmouseout="this.style.background='var(--teal-light)'">
+        <i class="fa-regular fa-comment-dots"></i> Chat en Línea
+      </button>
+      <button onclick="showPage('payments')" style="background:var(--accent-gold);color:var(--dark);padding:14px 28px;border-radius:50px;border:none;cursor:pointer;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:8px;transition:all .3s;" onmouseover="this.style.background='#b8954f'" onmouseout="this.style.background='var(--accent-gold)'">
+        <i class="fa-solid fa-credit-card"></i> Pagar en Línea
+      </button>
+      <a href="https://www.instagram.com/" target="_blank" style="background:#E1306C;color:white;padding:14px 28px;border-radius:50px;border:none;cursor:pointer;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:8px;text-decoration:none;transition:all .3s;" onmouseover="this.style.background='#C1145A'" onmouseout="this.style.background='#E1306C'">
+        <i class="fa-brands fa-instagram"></i> Instagram
+      </a>
+      <button onclick="showPage('contact')" style="background:var(--soft-white);color:var(--teal);padding:14px 28px;border-radius:50px;border:1.5px solid var(--border);cursor:pointer;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:8px;transition:all .3s;" onmouseover="this.style.borderColor='var(--teal-light)'" onmouseout="this.style.borderColor='var(--border)'">
+        <i class="fa-solid fa-location-dot"></i> Cómo Llegar
+      </button>
+      <button onclick="showPage('legal')" style="background:var(--soft-white);color:var(--text-muted);padding:14px 28px;border-radius:50px;border:1.5px solid var(--border);cursor:pointer;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:8px;transition:all .3s;" onmouseover="this.style.borderColor='var(--teal-light)'" onmouseout="this.style.borderColor='var(--border)'">
+        <i class="fa-solid fa-scale-balanced"></i> Ética & Legal
+      </button>
+    </div>
+  </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <section class="reviews-section">
+    <div class="reviews-inner">
+      <div class="reviews-header">
+        <div>
+          <div class="section-tag" style="color:var(--teal-light)">Lo que dicen nuestros pacientes</div>
+          <h2 class="section-title">Reseñas <em style="color:var(--teal-light)">reales</em></h2>
+        </div>
+        <div class="rating-summary">
+          <div class="rating-big">4.9</div>
+          <div class="rating-stars">★★★★★</div>
+          <div class="rating-count">Basado en 2.847 opiniones</div>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Excelente atención en todos los niveles. El Dr. Morales fue muy profesional y me explicó cada paso del procedimiento con paciencia. Las instalaciones son impecables."</p>
+          <div class="review-author"><div class="review-avatar">ML</div><div><div class="review-name">María L.</div><div class="review-date">Hace 2 semanas · Odontología</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Vine de otra provincia específicamente por su reputación en cirugía refractiva. El resultado superó mis expectativas. 100% recomendable, volvería sin dudarlo."</p>
+          <div class="review-author"><div class="review-avatar">CR</div><div><div class="review-name">Carlos R.</div><div class="review-date">Hace 1 mes · Oftalmología</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"El equipo de estética es increíble. Me sentí en buenas manos desde el primer momento. El sistema de turnos online es muy práctico y el seguimiento post-tratamiento, excelente."</p>
+          <div class="review-author"><div class="review-avatar">VS</div><div><div class="review-name">Valentina S.</div><div class="review-date">Hace 3 semanas · Estética</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★☆</div>
+          <p class="review-text">"Muy buena experiencia general. La atención es cálida y profesional. El único detalle es el tiempo de espera, aunque el personal siempre avisa y disculpa."</p>
+          <div class="review-author"><div class="review-avatar">JF</div><div><div class="review-name">Juan F.</div><div class="review-date">Hace 1 semana · Clínica General</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"La kinesióloga Dra. Torres es una profesional excepcional. Mi recuperación fue mucho más rápida de lo esperado. El espacio de rehabilitación es moderno y bien equipado."</p>
+          <div class="review-author"><div class="review-avatar">PN</div><div><div class="review-name">Patricia N.</div><div class="review-date">Hace 2 meses · Fisioterapia</div></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Encontré finalmente un lugar donde me sentí comprendida y no juzgada. El enfoque del área de salud mental es integrador y humano. Gracias por el cambio en mi vida."</p>
+          <div class="review-author"><div class="review-avatar">AM</div><div><div class="review-name">Andrea M.</div><div class="review-date">Hace 5 días · Salud Mental</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <div style="background:var(--accent-gold); padding:50px 80px; text-align:center;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--dark);margin-bottom:8px;">¿Listo para comenzar tu transformación?</h2>
+    <p style="color:rgba(10,26,25,.65);margin-bottom:28px;font-size:1rem;">Reservá tu turno hoy. Primera consulta de diagnóstico gratuita.</p>
+    <button class="btn-primary" onclick="showPage('schedule')" style="background:var(--dark);color:var(--cream);">
+      <i class="fa-regular fa-calendar-check"></i> Reservar Ahora — Sin Cargo
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Vita<span>Center</span></div>
+        <p class="footer-tagline">Más de 18 años brindando salud, bienestar y estética con los más altos estándares de excelencia médica.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <a onclick="showPage('procedures')">Odontología</a>
+        <a onclick="showPage('procedures')">Oftalmología</a>
+        <a onclick="showPage('procedures')">Estética</a>
+        <a onclick="showPage('procedures')">Fisioterapia</a>
+        <a onclick="showPage('procedures')">Salud Mental</a>
+      </div>
+      <div class="footer-col">
+        <h4>Institución</h4>
+        <a onclick="showPage('about')">Nosotros</a>
+        <a onclick="showPage('team')">Equipo Médico</a>
+        <a onclick="showPage('news')">Novedades</a>
+        <a onclick="showPage('legal')">Ética Médica</a>
+        <a onclick="showPage('legal')">Legales & Privacidad</a>
+      </div>
+      <div class="footer-col">
+        <h4>Atención</h4>
+        <a onclick="showPage('schedule')">Reservar Turno</a>
+        <a onclick="showPage('contact')">Contacto</a>
+        <a onclick="showPage('payments')">Pagos Online</a>
+        <a onclick="openChat()">Chat en Línea</a>
+        <a href="tel:+5491100000000">+54 9 11 0000-0000</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 VitaCenter. Todos los derechos reservados.</span>
+      <a href="https://www.instagram.com/" target="_blank" class="footer-ig"><i class="fa-brands fa-instagram"></i>@vitacenter.salud</a>
+      <span style="display:flex;gap:16px;">
+        <a onclick="showPage('legal')" style="color:inherit;text-decoration:none;cursor:pointer;">Privacidad</a>
+        <a onclick="showPage('legal')" style="color:inherit;text-decoration:none;cursor:pointer;">Términos</a>
+      </span>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════════════════════
+     PAGE: PROCEDURES
+══════════════════════════════════ -->
+<div class="page" id="page-procedures">
+  <div class="page-content-wrapper">
+    <div class="procedures-hero">
+      <div class="page-hero-content">
+        <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</span>
+        <h1 class="page-hero-title">Procedimientos<br><em style="color:var(--teal-light);font-style:italic">médicos & estéticos</em></h1>
+        <p class="page-hero-sub">Tecnología de última generación y protocolos internacionales para cada tratamiento.</p>
+      </div>
+    </div>
+
+    <div class="procedures-content">
+      <div class="proc-category">
+        <h2 class="proc-cat-title">🦷 Odontología</h2>
+        <div class="proc-grid">
+          <div class="proc-item"><div class="proc-item-icon">🔬</div><div class="proc-item-name">Implantes Dentales</div><div class="proc-item-sub">Sistema All-on-4 y All-on-6. Rehabilitación oral completa en 1 día.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">😁</div><div class="proc-item-name">Ortodoncia Invisible</div><div class="proc-item-sub">Alineadores Invisalign® certificados. Sin brackets ni incomodidad.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">✨</div><div class="proc-item-name">Blanqueamiento Dental</div><div class="proc-item-sub">Láser de última generación. Resultados en una sola sesión.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">💎</div><div class="proc-item-name">Carillas Dentales</div><div class="proc-item-sub">Carillas de porcelana e-Max. Sonrisa perfecta y duradera.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🏥</div><div class="proc-item-name">Cirugía Maxilofacial</div><div class="proc-item-sub">Corrección de mandíbula, extracciones complejas, patología oral.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🛡️</div><div class="proc-item-name">Periodoncia</div><div class="proc-item-sub">Tratamiento de encías, cirugía periodontal y mantenimiento.</div></div>
+        </div>
+      </div>
+      <div class="proc-category">
+        <h2 class="proc-cat-title">👁️ Oftalmología</h2>
+        <div class="proc-grid">
+          <div class="proc-item"><div class="proc-item-icon">⚡</div><div class="proc-item-name">Cirugía LASIK</div><div class="proc-item-sub">Corrección de miopía, hipermetropía y astigmatismo con láser.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🔭</div><div class="proc-item-name">Cirugía de Cataratas</div><div class="proc-item-sub">Facoemulsificación y lentes intraoculares premium de última generación.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🌊</div><div class="proc-item-name">Tratamiento de Glaucoma</div><div class="proc-item-sub">Cirugía láser y medicación especializada. Control de presión ocular.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">📷</div><div class="proc-item-name">OCT Retinal</div><div class="proc-item-sub">Tomografía de coherencia óptica. Diagnóstico no invasivo de alta resolución.</div></div>
+        </div>
+      </div>
+      <div class="proc-category">
+        <h2 class="proc-cat-title">✨ Medicina Estética</h2>
+        <div class="proc-grid">
+          <div class="proc-item"><div class="proc-item-icon">💉</div><div class="proc-item-name">Toxina Botulínica</div><div class="proc-item-sub">Tratamiento de arrugas de expresión. Resultados naturales y seguros.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🌸</div><div class="proc-item-name">Rellenos con Ácido Hialurónico</div><div class="proc-item-sub">Labios, pómulos, ojeras. Técnicas de mínima invasión.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">☀️</div><div class="proc-item-name">Rejuvenecimiento Facial</div><div class="proc-item-sub">Plasma Rico en Plaquetas (PRP), bioestimuladores y mesoterapia.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🔥</div><div class="proc-item-name">Tratamientos Corporales</div><div class="proc-item-sub">Criolipólisis, radiofrecuencia, ultrasonido focalizado y drenaje.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">💫</div><div class="proc-item-name">Depilación Definitiva</div><div class="proc-item-sub">Láser diodo de alta potencia. Efectivo en todos los fototipos de piel.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🌿</div><div class="proc-item-name">Tratamientos Faciales</div><div class="proc-item-sub">Hydrafacial, peelings químicos, microdermoabrasión y más.</div></div>
+        </div>
+      </div>
+      <div class="proc-category">
+        <h2 class="proc-cat-title">🏃 Fisioterapia & Rehabilitación</h2>
+        <div class="proc-grid">
+          <div class="proc-item"><div class="proc-item-icon">🦴</div><div class="proc-item-name">Kinesiología Deportiva</div><div class="proc-item-sub">Recuperación de lesiones, preparación física y prevención.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🤲</div><div class="proc-item-name">Osteopatía</div><div class="proc-item-sub">Terapia manual holística. Tratamiento de dolor crónico y postural.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">⚡</div><div class="proc-item-name">Electroterapia</div><div class="proc-item-sub">TENS, ultrasonido terapéutico, magnetoterapia y corrientes.</div></div>
+          <div class="proc-item"><div class="proc-item-icon">🧘</div><div class="proc-item-name">Pilates Terapéutico</div><div class="proc-item-sub">Sesiones individualizadas con equipos reformer profesionales.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--deep-teal);padding:60px 80px;text-align:center;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--cream);margin-bottom:12px;">¿No encontrás lo que buscás?</h2>
+      <p style="color:rgba(245,240,235,.6);margin-bottom:24px;">Contactanos y un especialista te orientará hacia el tratamiento ideal para vos.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="showPage('schedule')"><i class="fa-regular fa-calendar-check"></i> Consulta Gratuita</button>
+        <button class="btn-outline" onclick="openChat()"><i class="fa-regular fa-comment-dots"></i> Chat Online</button>
+      </div>
+    </div>
+
+    <!-- FOOTER mini -->
+    <div style="background:var(--dark);padding:20px 80px;text-align:center;">
+      <span style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2025 VitaCenter — <a onclick="showPage('legal')" style="color:var(--teal-light);cursor:pointer;text-decoration:none;">Términos y Condiciones</a></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: TEAM
+══════════════════════════════════ -->
+<div class="page" id="page-team">
+  <div class="page-content-wrapper">
+    <div style="background:linear-gradient(135deg,var(--dark),var(--deep-teal));padding:100px 80px 60px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=1400&q=80');background-size:cover;background-position:center;opacity:.1;"></div>
+      <div style="position:relative;z-index:1;max-width:1400px;margin:0 auto;">
+        <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+        <h1 class="page-hero-title">Nuestro equipo<br><em style="color:var(--teal-light);font-style:italic">de profesionales</em></h1>
+        <p class="page-hero-sub">Especialistas certificados, comprometidos con tu bienestar y con formación de excelencia.</p>
+      </div>
+    </div>
+
+    <div class="team-section">
+      <div class="team-inner">
+        <div class="section-tag">Directores médicos</div>
+        <h2 class="section-title" style="margin-bottom:32px;">Liderazgo <em>clínico</em></h2>
+
+        <div class="team-grid" style="margin-bottom:60px;">
+          <div class="team-card">
+            <div class="team-photo"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80" alt="Dr. Alejandro Morales" loading="lazy"></div>
+            <div class="team-info">
+              <div class="team-name">Dr. Alejandro Morales</div>
+              <div class="team-specialty">Director Médico · Cirujano</div>
+              <div class="team-sub">20 años de experiencia. Fellow del Royal College of Surgeons. Especialización en Harvard Medical School.</div>
+              <div class="team-badges"><span class="team-badge">Cirugía Maxilofacial</span><span class="team-badge">Implantología</span></div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80" alt="Dra. Valentina Ríos" loading="lazy"></div>
+            <div class="team-info">
+              <div class="team-name">Dra. Valentina Ríos</div>
+              <div class="team-specialty">Directora de Estética</div>
+              <div class="team-sub">Médica especialista en medicina estética y anti-aging. Certificada en Suiza. Docente universitaria.</div>
+              <div class="team-badges"><span class="team-badge">Medicina Estética</span><span class="team-badge">Anti-aging</span></div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80" alt="Dr. Marcos Vidal" loading="lazy"></div>
+            <div class="team-info">
+              <div class="team-name">Dr. Marcos Vidal</div>
+              <div class="team-specialty">Jefe de Oftalmología</div>
+              <div class="team-sub">Pionero en cirugía LASIK en Argentina. Más de 5.000 procedimientos realizados. Premio Nacional de Medicina.</div>
+              <div class="team-badges"><span class="team-badge">Cirugía Refractiva</span><span class="team-badge">Retina</span></div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" alt="Dra. Carolina Torres" loading="lazy"></div>
+            <div class="team-info">
+              <div class="team-name">Dra. Carolina Torres</div>
+              <div class="team-specialty">Kinesiología & Rehabilitación</div>
+              <div class="team-sub">Especialista en fisioterapia deportiva. Directora del Centro de Rehabilitación. Trabajó con atletas olímpicos.</div>
+              <div class="team-badges"><span class="team-badge">Deportiva</span><span class="team-badge">Osteopatía</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-tag">Equipo de especialistas</div>
+        <h2 class="section-title" style="margin-bottom:32px;">Más <em>especialistas</em></h2>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-photo" style="height:200px;"><div class="team-photo-placeholder"><i class="fa-solid fa-user-doctor"></i></div></div>
+            <div class="team-info">
+              <div class="team-name">Dr. Gabriel Fuentes</div>
+              <div class="team-specialty">Odontología General</div>
+              <div class="team-sub">Especialista en Endodoncia y Periodoncia avanzada.</div>
+              <div class="team-badges"><span class="team-badge">Endodoncia</span></div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-photo" style="height:200px;"><div class="team-photo-placeholder"><i class="fa-solid fa-user-nurse"></i></div></div>
+            <div class="team-info">
+              <div class="team-name">Lic. Sofía Medina</div>
+              <div class="team-specialty">Psicología Clínica</div>
+              <div class="team-sub">Terapia cognitivo-conductual, ansiedad y depresión.</div>
+              <div class="team-badges"><span class="team-badge">TCC</span><span class="team-badge">Adultos</span></div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-photo" style="height:200px;"><div class="team-photo-placeholder"><i class="fa-solid fa-stethoscope"></i></div></div>
+            <div class="team-info">
+              <div class="team-name">Dr. Nicolás Herrera</div>
+              <div class="team-specialty">Clínica Médica</div>
+              <div class="team-sub">Medicina preventiva y chequeos ejecutivos integrales.</div>
+              <div class="team-badges"><span class="team-badge">Preventiva</span></div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-photo" style="height:200px;"><div class="team-photo-placeholder"><i class="fa-solid fa-spa"></i></div></div>
+            <div class="team-info">
+              <div class="team-name">Est. Renata Paz</div>
+              <div class="team-specialty">Estética Avanzada</div>
+              <div class="team-sub">Hydrafacial, tratamientos corporales y depilación láser.</div>
+              <div class="team-badges"><span class="team-badge">Facial</span><span class="team-badge">Laser</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:48px;">
+          <button class="btn-primary" onclick="showPage('schedule')" style="background:var(--deep-teal);">
+            <i class="fa-regular fa-calendar-check"></i> Reservar con un especialista
+          </button>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--dark);padding:20px 80px;text-align:center;">
+      <span style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2025 VitaCenter — <a onclick="showPage('legal')" style="color:var(--teal-light);cursor:pointer;text-decoration:none;">Términos y Condiciones</a></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: NEWS / PROMOTIONS
+══════════════════════════════════ -->
+<div class="page" id="page-news">
+  <div class="page-content-wrapper">
+    <div style="background:linear-gradient(135deg,var(--dark),var(--deep-teal));padding:100px 80px 60px;">
+      <div style="max-width:1400px;margin:0 auto;">
+        <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+        <h1 class="page-hero-title">Novedades &<br><em style="color:var(--accent-gold);font-style:italic">Promociones</em></h1>
+        <p class="page-hero-sub">Enterate de las últimas noticias, lanzamientos y ofertas exclusivas para nuestros pacientes.</p>
+      </div>
+    </div>
+
+    <div class="promo-section" style="background:var(--soft-white);">
+      <div class="promo-inner">
+        <div class="section-tag" style="color:var(--accent-gold)">Ofertas del mes</div>
+        <h2 class="section-title" style="margin-bottom:32px;">Promociones <em>exclusivas</em></h2>
+        <div class="promo-grid">
+          <div class="promo-card">
+            <div class="promo-img"><img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&q=80" alt="Blanqueamiento" loading="lazy"><div class="promo-tag">-40% OFF</div></div>
+            <div class="promo-body">
+              <div class="promo-title">Blanqueamiento Dental Láser</div>
+              <div class="promo-desc">Sesión completa con kit de mantenimiento incluido. Resultados inmediatos garantizados.</div>
+              <div class="promo-price"><span class="promo-new">$28.000</span><span class="promo-old">$47.000</span></div>
+              <button class="btn-primary" style="margin-top:16px;padding:12px 24px;font-size:.82rem;background:var(--deep-teal);" onclick="showPage('schedule')">Reservar</button>
+            </div>
+          </div>
+          <div class="promo-card">
+            <div class="promo-img" style="background:linear-gradient(135deg,var(--teal),var(--teal-light));"><div class="promo-tag">NUEVO</div><i class="fa-solid fa-spa" style="font-size:4rem;color:rgba(255,255,255,.4);"></i></div>
+            <div class="promo-body">
+              <div class="promo-title">Pack Rejuvenecimiento Facial</div>
+              <div class="promo-desc">Botox + ácido hialurónico + PRP en un pack de 3 sesiones con descuento especial.</div>
+              <div class="promo-price"><span class="promo-new">$85.000</span><span class="promo-old">$110.000</span></div>
+              <button class="btn-primary" style="margin-top:16px;padding:12px 24px;font-size:.82rem;background:var(--deep-teal);" onclick="showPage('schedule')">Reservar</button>
+            </div>
+          </div>
+          <div class="promo-card">
+            <div class="promo-img"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt="Chequeo" loading="lazy"><div class="promo-tag">PACK</div></div>
+            <div class="promo-body">
+              <div class="promo-title">Chequeo Ejecutivo Premium</div>
+              <div class="promo-desc">Laboratorio completo, ECG, Rx tórax, espirometría y consulta con clínico. Todo en un día.</div>
+              <div class="promo-price"><span class="promo-new">$35.000</span><span class="promo-old">$52.000</span></div>
+              <button class="btn-primary" style="margin-top:16px;padding:12px 24px;font-size:.82rem;background:var(--deep-teal);" onclick="showPage('schedule')">Reservar</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:60px;">
+          <div class="section-tag">Últimas noticias</div>
+          <h2 class="section-title" style="margin-bottom:32px;">Novedades del <em>centro</em></h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;gap:0;">
+              <div style="width:140px;flex-shrink:0;background:linear-gradient(135deg,var(--deep-teal),var(--teal-mid));display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.3);">🏆</div>
+              <div style="padding:24px;">
+                <div style="font-size:.7rem;color:var(--teal-mid);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Diciembre 2025</div>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--deep-teal);margin-bottom:8px;">Premio Nacional a la Excelencia Médica 2025</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.5;">VitaCenter fue galardonado por la Asociación Médica Argentina en la categoría "Innovación en Atención al Paciente".</p>
+              </div>
+            </div>
+            <div style="background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;">
+              <div style="width:140px;flex-shrink:0;background:linear-gradient(135deg,var(--teal-mid),var(--teal-light));display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.3);">🔬</div>
+              <div style="padding:24px;">
+                <div style="font-size:.7rem;color:var(--teal-mid);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Noviembre 2025</div>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--deep-teal);margin-bottom:8px;">Nuevo equipo de tomografía 4D</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.5;">Incorporamos el tomógrafo maxilofacial más avanzado de Sudamérica, con resolución submilimétrica.</p>
+              </div>
+            </div>
+            <div style="background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;">
+              <div style="width:140px;flex-shrink:0;background:linear-gradient(135deg,var(--accent-rose),var(--accent-gold));display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.3);">📱</div>
+              <div style="padding:24px;">
+                <div style="font-size:.7rem;color:var(--teal-mid);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Octubre 2025</div>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--deep-teal);margin-bottom:8px;">Nueva app móvil VitaCenter</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.5;">Descargá nuestra app para ver tus turnos, resultados de laboratorio y mensajear con tu médico.</p>
+              </div>
+            </div>
+            <div style="background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;">
+              <div style="width:140px;flex-shrink:0;background:linear-gradient(135deg,var(--teal),var(--dark));display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.3);">🤝</div>
+              <div style="padding:24px;">
+                <div style="font-size:.7rem;color:var(--teal-mid);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Septiembre 2025</div>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--deep-teal);margin-bottom:8px;">Convenio con 40 obras sociales</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.5;">Ampliamos nuestra red de cobertura. Consultá si tu obra social o prepaga tiene convenio con nosotros.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--dark);padding:20px 80px;text-align:center;">
+      <span style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2025 VitaCenter</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: ABOUT
+══════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="page-content-wrapper">
+    <div class="about-hero" style="background:linear-gradient(135deg,var(--dark) 0%,var(--deep-teal) 100%);">
+      <div style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1600&q=80');background-size:cover;background-position:center;opacity:.12;"></div>
+      <div style="position:relative;z-index:1;max-width:1400px;margin:0 auto;">
+        <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+        <h1 class="page-hero-title">Quiénes <em style="color:var(--teal-light);font-style:italic">somos</em></h1>
+        <p class="page-hero-sub">Más de 18 años transformando vidas con ciencia, tecnología y vocación.</p>
+      </div>
+    </div>
+
+    <div class="about-content">
+      <div class="about-grid">
+        <div class="about-text">
+          <h2>Una historia de <em style="color:var(--teal-mid)">compromiso</em> médico</h2>
+          <p>VitaCenter nació en 2007 con una visión clara: democratizar el acceso a la salud de alta calidad. Comenzamos con un pequeño consultorio y hoy somos un centro integral de referencia, con más de 48 especialistas y tecnología de clase mundial.</p>
+          <p>Nuestra filosofía es simple: cada paciente es único y merece un tratamiento personalizado, con la máxima dedicación, transparencia y respeto por su autonomía.</p>
+          <p>Estamos certificados bajo la norma ISO 9001:2015 y habilitados por el Ministerio de Salud de la Nación, garantizando estándares de seguridad y calidad en cada procedimiento.</p>
+          <div style="display:flex;gap:16px;margin-top:24px;">
+            <button class="btn-primary" onclick="showPage('team')" style="background:var(--deep-teal);">Conocer el equipo</button>
+            <button class="btn-outline" onclick="showPage('contact')" style="border-color:var(--border);color:var(--teal);">Contactarnos</button>
+          </div>
+        </div>
+        <div class="about-img"><img src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=800&q=80" alt="VitaCenter" loading="lazy"></div>
+      </div>
+
+      <div class="section-tag">Nuestros principios</div>
+      <h2 class="section-title" style="margin-bottom:32px;">Lo que nos <em>define</em></h2>
+      <div class="values-grid">
+        <div class="value-card"><div class="value-icon">🎯</div><div class="value-title">Excelencia</div><div class="value-text">Nunca dejamos de mejorar. Invertimos en tecnología y formación continua de nuestro equipo.</div></div>
+        <div class="value-card"><div class="value-icon">🤝</div><div class="value-title">Confianza</div><div class="value-text">Relación médico-paciente basada en la honestidad, el respeto y la comunicación transparente.</div></div>
+        <div class="value-card"><div class="value-icon">🛡️</div><div class="value-title">Seguridad</div><div class="value-text">Protocolos internacionales de bioseguridad y esterilización. Tu seguridad es nuestra prioridad.</div></div>
+        <div class="value-card"><div class="value-icon">🌿</div><div class="value-title">Humanismo</div><div class="value-text">Tratamos personas, no enfermedades. El bienestar integral del paciente guía cada decisión.</div></div>
+        <div class="value-card"><div class="value-icon">🔬</div><div class="value-title">Innovación</div><div class="value-text">A la vanguardia de los últimos avances científicos y tecnológicos en medicina y estética.</div></div>
+        <div class="value-card"><div class="value-icon">🌍</div><div class="value-title">Responsabilidad</div><div class="value-text">Comprometidos con la sostenibilidad ambiental y el impacto positivo en la comunidad.</div></div>
+      </div>
+    </div>
+    <div style="background:var(--dark);padding:20px 80px;text-align:center;">
+      <span style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2025 VitaCenter</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: CONTACT
+══════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div style="max-width:1200px;margin:0 auto;">
+      <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-grid">
+        <div class="contact-form-section">
+          <h2>Ponete en <em style="color:var(--teal-mid);font-style:italic">contacto</em></h2>
+          <p>Completá el formulario y nos comunicaremos dentro de las próximas 2 horas hábiles.</p>
+          <form onsubmit="submitContact(event)">
+            <div class="form-group">
+              <label>Nombre completo *</label>
+              <input type="text" placeholder="Tu nombre" required id="ctName">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label>Email *</label>
+                <input type="email" placeholder="email@ejemplo.com" required id="ctEmail">
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="tel" placeholder="+54 9 11 xxxx-xxxx">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Especialidad de interés</label>
+              <select>
+                <option>Seleccioná una opción...</option>
+                <option>Odontología</option>
+                <option>Oftalmología</option>
+                <option>Medicina Estética</option>
+                <option>Fisioterapia</option>
+                <option>Salud Mental</option>
+                <option>Clínica General</option>
+                <option>Otra</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Motivo de consulta</label>
+              <textarea placeholder="Contanos brevemente qué necesitás..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="background:var(--deep-teal);width:100%;justify-content:center;">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Mensaje
+            </button>
+          </form>
+          <div class="success-message" id="contactSuccess">
+            <i class="fa-solid fa-circle-check" style="font-size:1.4rem;color:#059669;"></i>
+            <div><strong>¡Mensaje recibido!</strong> Te contactaremos en las próximas 2 horas.</div>
+          </div>
+          <div style="margin-top:24px;padding:16px;background:var(--cream);border-radius:12px;border:1px solid var(--border);">
+            <p style="font-size:.8rem;color:var(--text-muted);margin:0;"><i class="fa-solid fa-shield-halved" style="color:var(--teal-mid);margin-right:6px;"></i>Tus datos están protegidos bajo nuestra <a onclick="showPage('legal')" style="color:var(--teal-mid);cursor:pointer;">Política de Privacidad</a>. Nunca compartimos información personal.</p>
+          </div>
+        </div>
+
+        <div class="contact-info-section">
+          <div class="contact-info-block">
+            <h3>Información de contacto</h3>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div><div class="contact-info-label">Dirección</div><div class="contact-info-val">Av. Santa Fe 2850, Piso 3<br>Palermo, Buenos Aires<br>Argentina (C1425BGD)</div></div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
+              <div><div class="contact-info-label">Teléfono</div><div class="contact-info-val">+54 9 11 4800-0000<br>0800-333-8482 (gratuito)</div></div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div><div class="contact-info-label">Email</div><div class="contact-info-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="047071766a6b7744726d706567616a7061762a676b692a6576">[email&#160;protected]</a><br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfa6a1a9a08fb9a6bbaeacaaa1bbaabde1aca0a2e1aebd">[email&#160;protected]</a></div></div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+              <div><div class="contact-info-label">WhatsApp</div><div class="contact-info-val">+54 9 11 4800-0001<br>Atención 8:00–20:00 hs</div></div>
+            </div>
+            <div style="margin-top:24px;">
+              <div style="color:rgba(255,255,255,.55);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Horarios de atención</div>
+              <div class="hours-grid">
+                <div class="hours-item"><div class="hours-day">Lunes – Viernes</div><div class="hours-time">08:00 – 20:00</div></div>
+                <div class="hours-item"><div class="hours-day">Sábados</div><div class="hours-time">09:00 – 14:00</div></div>
+                <div class="hours-item"><div class="hours-day">Domingos</div><div class="hours-time" style="color:rgba(255,255,255,.4)">Cerrado</div></div>
+                <div class="hours-item"><div class="hours-day">Guardia</div><div class="hours-time" style="color:#4ADE80">24 hs 📞</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3285.117!2d-58.4236!3d-34.5875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb5a7b7c3b1a1%3A0x7f8a0a0b0c0d0e0f!2sAv.%20Santa%20Fe%202850%2C%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1700000000000!5m2!1ses!2sar"
+              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+
+          <div style="margin-top:16px;display:flex;gap:10px;">
+            <a href="https://www.instagram.com/" target="_blank" style="flex:1;background:#E1306C;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .3s;" onmouseover="this.style.background='#C1145A'" onmouseout="this.style.background='#E1306C'">
+              <i class="fa-brands fa-instagram"></i> @vitacenter.salud
+            </a>
+            <a href="https://wa.me/5491148000001" target="_blank" style="flex:1;background:#25D366;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .3s;" onmouseover="this.style.background='#1BA84F'" onmouseout="this.style.background='#25D366'">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: SCHEDULE
+══════════════════════════════════ -->
+<div class="page" id="page-schedule">
+  <div class="page-content-wrapper">
+    <div style="background:linear-gradient(135deg,var(--dark),var(--deep-teal));padding:100px 80px 60px;">
+      <div style="max-width:900px;margin:0 auto;">
+        <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+        <h1 class="page-hero-title">Asistente de <em style="color:var(--teal-light);font-style:italic">Turnos</em></h1>
+        <p class="page-hero-sub">Reservá tu cita en menos de 2 minutos, sin llamadas ni esperas.</p>
+      </div>
+    </div>
+
+    <div class="schedule-page">
+      <div class="schedule-inner">
+        <div class="schedule-steps">
+          <div class="step-dot active" id="sdot0"></div>
+          <div class="step-dot" id="sdot1"></div>
+          <div class="step-dot" id="sdot2"></div>
+          <div class="step-dot" id="sdot3"></div>
+          <div class="step-dot" id="sdot4"></div>
+        </div>
+
+        <!-- STEP 0: Especialidad -->
+        <div class="schedule-step active" id="sstep0">
+          <h2 class="step-title">¿Qué especialidad necesitás?</h2>
+          <p class="step-sub">Elegí la especialidad médica para tu consulta.</p>
+          <div class="spec-options">
+            <div class="spec-option" onclick="selectSpec(this,'Odontología')"><i class="fa-solid fa-tooth"></i><span>Odontología</span></div>
+            <div class="spec-option" onclick="selectSpec(this,'Oftalmología')"><i class="fa-solid fa-eye"></i><span>Oftalmología</span></div>
+            <div class="spec-option" onclick="selectSpec(this,'Medicina Estética')"><i class="fa-solid fa-spa"></i><span>Estética</span></div>
+            <div class="spec-option" onclick="selectSpec(this,'Clínica General')"><i class="fa-solid fa-heart-pulse"></i><span>Clínica</span></div>
+            <div class="spec-option" onclick="selectSpec(this,'Fisioterapia')"><i class="fa-solid fa-person-running"></i><span>Fisioterapia</span></div>
+            <div class="spec-option" onclick="selectSpec(this,'Salud Mental')"><i class="fa-solid fa-brain"></i><span>Salud Mental</span></div>
+          </div>
+          <button class="btn-primary" style="margin-top:32px;background:var(--deep-teal);opacity:.5;" id="btnStep0" disabled onclick="goStep(1)">
+            Continuar <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- STEP 1: Profesional -->
+        <div class="schedule-step" id="sstep1">
+          <h2 class="step-title">Elegí tu profesional</h2>
+          <p class="step-sub">Especialistas disponibles para la especialidad seleccionada.</p>
+          <div class="spec-options" id="profList"></div>
+          <div style="display:flex;gap:12px;margin-top:32px;">
+            <button class="btn-outline" style="border-color:var(--border);color:var(--teal);" onclick="goStep(0)"><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+            <button class="btn-primary" style="background:var(--deep-teal);opacity:.5;" id="btnStep1" disabled onclick="goStep(2)">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Fecha -->
+        <div class="schedule-step" id="sstep2">
+          <h2 class="step-title">Elegí la fecha</h2>
+          <p class="step-sub" id="calMonthLabel" style="margin-bottom:16px;"></p>
+          <div class="calendar-grid" id="calGrid"></div>
+          <div style="display:flex;gap:12px;margin-top:16px;">
+            <button class="btn-outline" style="border-color:var(--border);color:var(--teal);" onclick="goStep(1)"><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+            <button class="btn-primary" style="background:var(--deep-teal);opacity:.5;" id="btnStep2" disabled onclick="goStep(3)">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Horario -->
+        <div class="schedule-step" id="sstep3">
+          <h2 class="step-title">Elegí el horario</h2>
+          <p class="step-sub">Horarios disponibles para la fecha seleccionada.</p>
+          <div class="time-slots" id="timeSlots"></div>
+          <div style="display:flex;gap:12px;margin-top:32px;">
+            <button class="btn-outline" style="border-color:var(--border);color:var(--teal);" onclick="goStep(2)"><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+            <button class="btn-primary" style="background:var(--deep-teal);opacity:.5;" id="btnStep3" disabled onclick="goStep(4)">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Confirmar -->
+        <div class="schedule-step" id="sstep4">
+          <h2 class="step-title">Confirmá tu turno</h2>
+          <p class="step-sub">Revisá los datos antes de confirmar.</p>
+          <div class="confirm-card">
+            <div class="confirm-row"><span class="confirm-label">Especialidad</span><span class="confirm-val" id="cfSpec">—</span></div>
+            <div class="confirm-row"><span class="confirm-label">Profesional</span><span class="confirm-val" id="cfProf">—</span></div>
+            <div class="confirm-row"><span class="confirm-label">Fecha</span><span class="confirm-val" id="cfDate">—</span></div>
+            <div class="confirm-row"><span class="confirm-label">Horario</span><span class="confirm-val" id="cfTime">—</span></div>
+          </div>
+          <div class="form-group"><label>Nombre completo *</label><input type="text" placeholder="Tu nombre completo" id="cfName"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-group"><label>Email *</label><input type="email" placeholder="email@ejemplo.com" id="cfEmail"></div>
+            <div class="form-group"><label>Teléfono</label><input type="tel" placeholder="+54 9 11 xxxx-xxxx"></div>
+          </div>
+          <div class="form-group"><label>Obra social / prepaga</label><input type="text" placeholder="OSDE, Swiss Medical, particular, etc."></div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <button class="btn-outline" style="border-color:var(--border);color:var(--teal);" onclick="goStep(3)"><i class="fa-solid fa-arrow-left"></i> Atrás</button>
+            <button class="btn-primary" style="background:var(--teal);flex:1;justify-content:center;" onclick="confirmTurno()">
+              <i class="fa-solid fa-calendar-check"></i> Confirmar Turno
+            </button>
+          </div>
+          <div class="success-message" id="scheduleSuccess" style="margin-top:16px;">
+            <i class="fa-solid fa-circle-check" style="font-size:1.4rem;color:#059669;"></i>
+            <div><strong>¡Turno confirmado!</strong> Recibirás un email con los detalles y un recordatorio 24 hs antes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--dark);padding:20px 80px;text-align:center;">
+      <span style="color:rgba(255,255,255,.3);font-size:.78rem;">© 2025 VitaCenter</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: PAYMENTS
+══════════════════════════════════ -->
+<div class="page" id="page-payments">
+  <div class="payment-page">
+    <div style="max-width:900px;margin:0 auto;">
+      <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+      <h2 class="section-title" style="font-family:'Cormorant Garamond',serif;font-size:2.8rem;">Medios de <em>pago</em></h2>
+      <p style="color:var(--text-muted);margin-bottom:8px;max-width:600px;line-height:1.7;">Aceptamos múltiples formas de pago para tu comodidad. Todas las transacciones son seguras y encriptadas.</p>
+
+      <div class="pay-secure"><i class="fa-solid fa-lock"></i> Pago 100% seguro con encriptación SSL 256-bit</div>
+
+      <div class="payment-methods">
+        <div class="pay-method"><i class="fa-brands fa-cc-visa"></i><span>Visa</span></div>
+        <div class="pay-method"><i class="fa-brands fa-cc-mastercard"></i><span>Mastercard</span></div>
+        <div class="pay-method"><i class="fa-brands fa-cc-amex"></i><span>American Express</span></div>
+        <div class="pay-method"><i class="fa-solid fa-mobile-screen"></i><span>Mercado Pago</span></div>
+        <div class="pay-method"><i class="fa-brands fa-paypal"></i><span>PayPal</span></div>
+        <div class="pay-method"><i class="fa-solid fa-building-columns"></i><span>Transferencia Bancaria</span></div>
+        <div class="pay-method"><i class="fa-solid fa-money-bill-wave"></i><span>Efectivo</span></div>
+        <div class="pay-method"><i class="fa-solid fa-qrcode"></i><span>QR / Debin</span></div>
+      </div>
+
+      <div style="background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;margin-top:8px;">
+        <h3 style="font-size:1.1rem;font-weight:600;color:var(--deep-teal);margin-bottom:16px;"><i class="fa-solid fa-credit-card" style="color:var(--teal-mid);margin-right:8px;"></i>Pago de turno / consulta</h3>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:24px;line-height:1.6;">Para pagar una consulta o procedimiento ya reservado, ingresá el número de turno que recibiste por email.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <input type="text" placeholder="Número de turno (ej: VTC-2025-0342)" style="flex:1;min-width:220px;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:.9rem;outline:none;background:white;transition:border .3s;" onfocus="this.style.borderColor='var(--teal-light)'" onblur="this.style.borderColor='var(--border)'">
+          <button class="btn-primary" style="background:var(--deep-teal);" onclick="alert('Redirigiendo a la pasarela de pago seguro...')"><i class="fa-solid fa-lock"></i> Ir a pagar</button>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--deep-teal),var(--teal));border-radius:var(--r-lg);padding:32px;margin-top:20px;color:white;">
+        <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:12px;color:var(--cream);"><i class="fa-solid fa-hand-holding-heart" style="color:var(--teal-light);margin-right:8px;"></i>Planes de financiación</h3>
+        <p style="color:rgba(245,240,235,.7);font-size:.88rem;margin-bottom:16px;line-height:1.6;">Muchos tratamientos pueden abonarse en cuotas sin interés. Consultá disponibilidad con nuestro equipo.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;">
+          <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:12px;text-align:center;font-size:.82rem;"><strong style="display:block;font-size:1.1rem;color:var(--teal-light)">3</strong>cuotas sin interés</div>
+          <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:12px;text-align:center;font-size:.82rem;"><strong style="display:block;font-size:1.1rem;color:var(--teal-light)">6</strong>cuotas sin interés</div>
+          <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:12px;text-align:center;font-size:.82rem;"><strong style="display:block;font-size:1.1rem;color:var(--teal-light)">12</strong>cuotas bancarias</div>
+          <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:12px;text-align:center;font-size:.82rem;"><strong style="display:block;font-size:1.1rem;color:var(--teal-light)">24</strong>cuotas especiales</div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;padding:20px;background:rgba(74,173,166,.08);border:1px solid rgba(74,173,166,.2);border-radius:var(--r);">
+        <p style="font-size:.82rem;color:var(--text-muted);"><i class="fa-solid fa-circle-info" style="color:var(--teal-mid);margin-right:6px;"></i>Consultá por convenios con tu obra social o prepaga. Trabajamos con OSDE, Swiss Medical, Galeno, IOMA, PAMI y más de 40 prestadoras. Para consultas: <strong style="color:var(--teal);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cecfdfbf3efdceaf5e8fdfff9f2e8f9eeb2fff3f1b2fdee">[email&#160;protected]</a></strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: LEGAL / ETHICS
+══════════════════════════════════ -->
+<div class="page" id="page-legal">
+  <div class="legal-page">
+    <div class="legal-inner">
+      <span onclick="showPage('home')" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Inicio</span>
+      <h1>Ética Médica &<br>Marco Legal</h1>
+      <p class="meta">Última actualización: Enero 2025 · VitaCenter S.A. — CUIT 30-00000000-0</p>
+
+      <div class="legal-section">
+        <h2>🏛️ Código de Ética Médica</h2>
+        <p>VitaCenter adhiere estrictamente al Código de Ética y Deontología Médica de la Asociación Médica Argentina (AMA) y a las normas del Ministerio de Salud de la Nación. Todo nuestro personal médico y no médico está sujeto a estas disposiciones éticas.</p>
+        <p>Los principios fundamentales que rigen nuestra práctica son: beneficencia (buscar siempre el bien del paciente), no maleficencia (evitar todo daño), autonomía (respetar el derecho del paciente a decidir) y justicia (equidad en el trato y acceso).</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>📋 Consentimiento Informado</h2>
+        <p>Ningún procedimiento invasivo, diagnóstico o terapéutico se realiza sin la firma previa del consentimiento informado por parte del paciente o su representante legal. El paciente tiene derecho a recibir información completa y comprensible sobre su diagnóstico, opciones de tratamiento, riesgos y beneficios, en un lenguaje accesible.</p>
+        <p>El consentimiento informado puede ser revocado en cualquier momento previo al procedimiento sin perjuicio para el paciente ni su atención futura.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>🔒 Política de Privacidad y Protección de Datos</h2>
+        <p>El tratamiento de datos personales de los pacientes se rige por la Ley N° 25.326 de Protección de Datos Personales de Argentina y sus normativas complementarias. Los datos son utilizados exclusivamente para la prestación del servicio médico solicitado.</p>
+        <p>VitaCenter garantiza: confidencialidad absoluta de la historia clínica, acceso del paciente a sus propios datos, derecho al olvido, no comercialización de información personal, y almacenamiento seguro bajo protocolos ISO 27001.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>📁 Secreto Profesional</h2>
+        <p>Todo el equipo de VitaCenter está sujeto al secreto profesional médico conforme al Art. 156 del Código Penal Argentino y las normas deontológicas vigentes. La historia clínica es un documento de carácter estrictamente confidencial.</p>
+        <p>La información médica podrá ser compartida únicamente con: otros profesionales del equipo tratante cuando sea necesario para el cuidado del paciente, con autorización expresa del paciente, o en los casos expresamente previstos por la ley (enfermedades de declaración obligatoria, orden judicial).</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>⚖️ Términos y Condiciones del Servicio</h2>
+        <p>El uso de los servicios online de VitaCenter (reservas, chat, portal de pacientes) implica la aceptación de los presentes términos. VitaCenter se reserva el derecho de modificar estos términos, notificando a los usuarios con un mínimo de 30 días de anticipación.</p>
+        <p>Los precios publicados son orientativos y pueden variar según el diagnóstico y el plan de cobertura del paciente. El presupuesto definitivo se entrega por escrito antes de todo procedimiento.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>🚨 Derechos del Paciente</h2>
+        <p>De acuerdo con la Ley N° 26.529 de Derechos del Paciente, todo paciente tiene derecho a: asistencia médica sin discriminación, trato digno y respetuoso, información sanitaria completa y accesible, interconsulta médica, segunda opinión, historia clínica propia, confidencialidad, autonomía de la voluntad y rechazo de procedimientos.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>📞 Canal de Denuncia y Reclamos</h2>
+        <p>Para consultas, quejas o denuncias éticas, el paciente puede dirigirse a: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6b3a2bfb5b796a0bfa2b7b5b3b8a2b3a4f8b5b9bbf8b7a4">[email&#160;protected]</a> — 0800-333-VITA (8482) — Comité de Ética del establecimiento (por escrito). También puede contactar al Ministerio de Salud de la Nación o al Colegio Médico correspondiente.</p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--deep-teal),var(--teal));border-radius:var(--r-lg);padding:32px;margin-top:32px;color:white;text-align:center;">
+        <i class="fa-solid fa-scale-balanced" style="font-size:2.5rem;color:var(--teal-light);margin-bottom:16px;display:block;"></i>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--cream);margin-bottom:8px;">Certificaciones y habilitaciones</h3>
+        <p style="color:rgba(245,240,235,.65);font-size:.88rem;margin-bottom:20px;">Habilitado por el Ministerio de Salud de la Nación · Certificado ISO 9001:2015 · Acreditado por ACAMI · Miembro activo de la AMA</p>
+        <button class="btn-outline" onclick="showPage('contact')" style="margin:0 auto;display:inline-flex;">Consultar documentación</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CHAT WIDGET
+══════════════════════════════════ -->
+<button class="chat-bubble" onclick="openChat()" id="chatBubble" aria-label="Abrir chat">
+  <i class="fa-regular fa-comment-dots" id="chatIcon"></i>
+  <span class="badge" id="chatBadge">1</span>
+</button>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+    <div class="chat-header-info">
+      <h4>Asistente VitaCenter</h4>
+      <span class="chat-online">En línea ahora</span>
+    </div>
+    <button onclick="openChat()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:1.1rem;"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot">👋 ¡Hola! Soy el asistente de VitaCenter. ¿En qué puedo ayudarte hoy?</div>
+    <div class="msg bot">Puedo ayudarte a reservar un turno, informarte sobre nuestros servicios o conectarte con un profesional.</div>
+  </div>
+  <div class="chat-quick" id="chatQuick">
+    <button class="chat-quick-btn" onclick="sendQuick('Quiero sacar un turno')">📅 Sacar turno</button>
+    <button class="chat-quick-btn" onclick="sendQuick('¿Cuáles son los horarios?')">🕐 Horarios</button>
+    <button class="chat-quick-btn" onclick="sendQuick('¿Tienen cobertura con OSDE?')">🏥 Obras sociales</button>
+    <button class="chat-quick-btn" onclick="sendQuick('¿Dónde están ubicados?')">📍 Ubicación</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" placeholder="Escribí tu mensaje..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCRIPTS
+══════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ─── NAVIGATION ───
+const pages = ['home','procedures','team','news','about','contact','schedule','payments','legal'];
+const navIds = ['nav-home','nav-procedures','nav-team','nav-news','nav-about','nav-contact','nav-schedule','nav-payments'];
+
+function showPage(name) {
+  pages.forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if(el){ el.classList.toggle('active', p===name); }
+  });
+  navIds.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('active');
+  });
+  const navMap = {home:'nav-home',procedures:'nav-procedures',team:'nav-team',news:'nav-news',about:'nav-about',contact:'nav-contact',schedule:'nav-schedule',payments:'nav-payments'};
+  if(navMap[name]){ const el=document.getElementById(navMap[name]); if(el) el.classList.add('active'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleMobile(){
+  const m=document.getElementById('mobileNav');
+  m.classList.toggle('open');
+}
+
+// ─── CONTACT FORM ───
+function submitContact(e){
+  e.preventDefault();
+  document.getElementById('contactSuccess').classList.add('show');
+}
+
+// ─── SCHEDULE WIZARD ───
+let schedState = { spec:'', prof:'', date:'', time:'', step:0 };
+
+const profsBySpec = {
+  'Odontología': ['Dr. Alejandro Morales','Dr. Gabriel Fuentes'],
+  'Oftalmología': ['Dr. Marcos Vidal'],
+  'Medicina Estética': ['Dra. Valentina Ríos','Est. Renata Paz'],
+  'Clínica General': ['Dr. Nicolás Herrera'],
+  'Fisioterapia': ['Dra. Carolina Torres'],
+  'Salud Mental': ['Lic. Sofía Medina']
+};
+
+function selectSpec(el, spec){
+  document.querySelectorAll('#sstep0 .spec-option').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  schedState.spec = spec;
+  const btn=document.getElementById('btnStep0');
+  btn.disabled=false; btn.style.opacity='1';
+}
+
+function buildProfList(){
+  const profs = profsBySpec[schedState.spec] || [];
+  const container=document.getElementById('profList');
+  container.innerHTML='';
+  profs.forEach(p=>{
+    const div=document.createElement('div');
+    div.className='spec-option';
+    div.innerHTML=`<i class="fa-solid fa-user-doctor" style="font-size:1.6rem;margin-bottom:8px;"></i><span>${p}</span>`;
+    div.onclick=()=>{
+      container.querySelectorAll('.spec-option').forEach(e=>e.classList.remove('selected'));
+      div.classList.add('selected');
+      schedState.prof=p;
+      const btn=document.getElementById('btnStep1');
+      btn.disabled=false; btn.style.opacity='1';
+    };
+    container.appendChild(div);
+  });
+}
+
+function buildCalendar(){
+  const now=new Date(); const year=now.getFullYear(); const month=now.getMonth();
+  const names=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  document.getElementById('calMonthLabel').textContent=names[month]+' '+year;
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML='';
+  ['Do','Lu','Ma','Mi','Ju','Vi','Sa'].forEach(d=>{
+    const cell=document.createElement('div'); cell.className='cal-day-name'; cell.textContent=d; grid.appendChild(cell);
+  });
+  const firstDay=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  for(let i=0;i<firstDay;i++){ const e=document.createElement('div'); e.className='cal-day empty'; grid.appendChild(e); }
+  for(let d=1;d<=daysInMonth;d++){
+    const cell=document.createElement('div');
+    const isToday=d===now.getDate();
+    const isPast=d<now.getDate();
+    cell.className='cal-day'+(isToday?' today':'')+(isPast?' past':' available');
+    cell.textContent=d;
+    if(!isPast){
+      cell.onclick=()=>{
+        grid.querySelectorAll('.cal-day.selected').forEach(e=>e.classList.remove('selected'));
+        cell.classList.add('selected');
+        schedState.date=`${d}/${month+1}/${year}`;
+        const btn=document.getElementById('btnStep2');
+        btn.disabled=false; btn.style.opacity='1';
+        buildTimeSlots();
+      };
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function buildTimeSlots(){
+  const slots=['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
+  const taken=['09:00','10:30','14:30','16:00'];
+  const container=document.getElementById('timeSlots');
+  container.innerHTML='';
+  slots.forEach(t=>{
+    const btn=document.createElement('button');
+    btn.className='time-slot'+(taken.includes(t)?' taken':'');
+    btn.textContent=t;
+    if(!taken.includes(t)){
+      btn.onclick=()=>{
+        container.querySelectorAll('.time-slot').forEach(e=>e.classList.remove('selected'));
+        btn.classList.add('selected');
+        schedState.time=t;
+        const b=document.getElementById('btnStep3');
+        b.disabled=false; b.style.opacity='1';
+      };
+    }
+    container.appendChild(btn);
+  });
+}
+
+function goStep(n){
+  if(n===1) buildProfList();
+  if(n===2) buildCalendar();
+  document.querySelectorAll('.schedule-step').forEach((el,i)=>{ el.classList.toggle('active',i===n); });
+  document.querySelectorAll('.step-dot').forEach((el,i)=>{
+    el.classList.toggle('done',i<n);
+    el.classList.toggle('active',i===n);
+  });
+  schedState.step=n;
+  if(n===4){
+    document.getElementById('cfSpec').textContent=schedState.spec;
+    document.getElementById('cfProf').textContent=schedState.prof;
+    document.getElementById('cfDate').textContent=schedState.date;
+    document.getElementById('cfTime').textContent=schedState.time;
+  }
+}
+
+function confirmTurno(){
+  const n=document.getElementById('cfName').value;
+  const e=document.getElementById('cfEmail').value;
+  if(!n||!e){ alert('Por favor completá nombre y email para confirmar.'); return; }
+  document.getElementById('scheduleSuccess').classList.add('show');
+  document.querySelector('#sstep4 .btn-primary:last-of-type').disabled=true;
+}
+
+// ─── CHAT ───
+let chatOpen=false;
+const chatResponses = {
+  'turno': '¡Claro! Podés reservar tu turno directamente haciendo click en "Reservar Turno" en el menú, o puedo guiarte. ¿Qué especialidad necesitás?',
+  'horario': 'Nuestros horarios son: Lunes a Viernes de 8:00 a 20:00 hs, Sábados de 9:00 a 14:00 hs. Guardia telefónica las 24 hs.',
+  'osde': 'Sí, trabajamos con OSDE, Swiss Medical, Galeno, IOMA, PAMI y más de 40 obras sociales. Para verificar tu cobertura específica, escribinos a turnos@vitacenter.com.ar.',
+  'ubicaci': 'Estamos en Av. Santa Fe 2850, Piso 3, Palermo, Buenos Aires. A media cuadra del subte D, estación Scalabrini Ortiz.',
+  'precio': 'Los precios varían según la especialidad y el tratamiento. La primera consulta de diagnóstico es gratuita. ¿Sobre qué servicio necesitás presupuesto?',
+  'default': 'Entendido. Para darte una respuesta más detallada, te recomiendo contactar directamente a nuestro equipo: 📞 +54 9 11 4800-0000 o 📧 info@vitacenter.com.ar. ¿Hay algo más en lo que pueda ayudarte?'
+};
+
+function openChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chatPanel').classList.toggle('open',chatOpen);
+  document.getElementById('chatBadge').style.display='none';
+  document.getElementById('chatIcon').className=chatOpen?'fa-solid fa-xmark':'fa-regular fa-comment-dots';
+}
+
+function sendQuick(text){ addUserMsg(text); processChat(text); }
+
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg) return;
+  addUserMsg(msg);
+  input.value='';
+  processChat(msg);
+}
+
+function addUserMsg(text){
+  const msgs=document.getElementById('chatMessages');
+  const div=document.createElement('div');
+  div.className='msg user'; div.textContent=text;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function processChat(text){
+  const lower=text.toLowerCase();
+  let response=chatResponses.default;
+  for(const key in chatResponses){
+    if(key!=='default' && lower.includes(key)){ response=chatResponses[key]; break; }
+  }
+  setTimeout(()=>{
+    const msgs=document.getElementById('chatMessages');
+    const div=document.createElement('div');
+    div.className='msg bot'; div.textContent=response;
+    msgs.appendChild(div);
+    msgs.scrollTop=msgs.scrollHeight;
+  },700);
+}
+
+// PATIENT PORTAL
+let patientPanelOpen=false, currentUser=null;
+const demoPatients={
+  'maria@mail.com':{pass:'1234',nombre:'María',apellido:'García',initials:'MG',dni:'28.541.032',fechaNac:'14/03/1985',obraSocial:'OSDE 310',telefono:'+54 9 11 4521-9870',email:'maria@mail.com',id:'VC-00421'},
+  '28541032':{pass:'1234',nombre:'María',apellido:'García',initials:'MG',dni:'28.541.032',fechaNac:'14/03/1985',obraSocial:'OSDE 310',telefono:'+54 9 11 4521-9870',email:'maria@mail.com',id:'VC-00421'},
+  'carlos@mail.com':{pass:'5678',nombre:'Carlos',apellido:'Rodríguez',initials:'CR',dni:'31.200.455',fechaNac:'22/07/1979',obraSocial:'Swiss Medical',telefono:'+54 9 11 3344-5566',email:'carlos@mail.com',id:'VC-00089'}
+};
+function toggleLoginPanel(){patientPanelOpen=!patientPanelOpen;document.getElementById('patientPanel').classList.toggle('open',patientPanelOpen);document.getElementById('patientOverlay').classList.toggle('open',patientPanelOpen);}
+function closeLoginPanel(){patientPanelOpen=false;document.getElementById('patientPanel').classList.remove('open');document.getElementById('patientOverlay').classList.remove('open');}
+function switchAuthTab(tab,el){document.querySelectorAll('.pp-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('authLogin').style.display=tab==='login'?'block':'none';document.getElementById('authRegister').style.display=tab==='register'?'block':'none';}
+function togglePwd(id,btn){const inp=document.getElementById(id);const isText=inp.type==='text';inp.type=isText?'password':'text';btn.innerHTML=isText?'<i class="fa-regular fa-eye"></i>':'<i class="fa-regular fa-eye-slash"></i>';}
+function showError(id,msg){const el=document.getElementById(id);el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500);}
+function doLogin(){
+  const user=document.getElementById('loginUser').value.trim().toLowerCase();
+  const pass=document.getElementById('loginPass').value;
+  if(!user||!pass){showError('loginError','Completá usuario y contraseña.');return;}
+  const patient=demoPatients[user];
+  if(!patient||patient.pass!==pass){showError('loginError','Datos incorrectos. Demo: maria@mail.com / 1234');return;}
+  currentUser=patient;showPortal();
+}
+function doRegister(){
+  const n=document.getElementById('regNombre').value.trim();
+  const a=document.getElementById('regApellido').value.trim();
+  const e=document.getElementById('regEmail').value.trim();
+  const d=document.getElementById('regDni').value.trim();
+  const p=document.getElementById('regPass').value;
+  if(!n||!a||!e||!d||!p){showError('registerError','Completá todos los campos.');return;}
+  if(p.length<8){showError('registerError','La contraseña debe tener al menos 8 caracteres.');return;}
+  currentUser={nombre:n,apellido:a,initials:(n[0]+a[0]).toUpperCase(),dni:d,email:e,obraSocial:'Particular',telefono:'—',fechaNac:'—',id:'VC-NEW'};
+  showPortal();
+}
+function showPortal(){
+  document.getElementById('loginView').style.display='none';
+  const pv=document.getElementById('portalView');
+  pv.style.display='flex';
+  document.getElementById('portalAvatar').textContent=currentUser.initials;
+  document.getElementById('portalName').textContent=currentUser.nombre+' '+currentUser.apellido;
+  if(document.getElementById('portalId')) document.getElementById('portalId').textContent='ID: '+currentUser.id;
+  const btn=document.getElementById('navPatientBtn');
+  btn.classList.add('logged-in');
+  document.getElementById('navPatientLabel').textContent=currentUser.nombre;
+  document.getElementById('navPatientIcon').className='fa-solid fa-user-check';
+  document.getElementById('navPatientDot').style.display='block';
+  // reset tabs
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ptab')[0].classList.add('active');
+  renderPortalTab('inicio');
+}
+function doLogout(){
+  currentUser=null;
+  document.getElementById('loginView').style.display='block';
+  document.getElementById('portalView').style.display='none';
+  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
+  const btn=document.getElementById('navPatientBtn');
+  btn.classList.remove('logged-in');
+  document.getElementById('navPatientLabel').textContent='Mi Cuenta';
+  document.getElementById('navPatientIcon').className='fa-solid fa-user-circle';
+  document.getElementById('navPatientDot').style.display='none';
+  closeLoginPanel();
+}
+function switchPortalTab(tab,el){document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderPortalTab(tab);}
+function renderPortalTab(tab){
+  const c=document.getElementById('portalContent');
+  const u=currentUser;
+  const col=(h)=>`<div class="portal-col">${h}</div>`;
+  const sec=(t)=>`<div class="portal-section-title">${t}</div>`;
+  const card=(h)=>`<div class="portal-card">${h}</div>`;
+  const bdg=(t,cl)=>`<span class="portal-badge badge-${cl}">${t}</span>`;
+  const act=(ic,lbl,fn)=>`<button class="pp-action-btn" onclick="${fn}"><i class="fa-solid ${ic}"></i>${lbl}<span class="arrow"><i class="fa-solid fa-chevron-right"></i></span></button>`;
+
+  if(tab==='inicio'){
+    c.innerHTML=
+      col(`${sec('Bienvenido/a')}
+        <div class="portal-alert"><i class="fa-solid fa-bell"></i><div class="portal-alert-text"><strong>Próximo turno</strong>Odontología · Dr. Morales · 15 ene 2026 · 10:00 hs<br><span style="font-size:.78rem;color:var(--text-muted)">Consultorio 3B · Piso 2</span></div></div>
+        <div class="portal-stat-row">
+          <div class="portal-stat"><div class="portal-stat-num">3</div><div class="portal-stat-label">Turnos este año</div></div>
+          <div class="portal-stat"><div class="portal-stat-num">2</div><div class="portal-stat-label">Resultados nuevos</div></div>
+        </div>
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Ibuprofeno 400mg</div><div class="portal-card-sub">Dr. Morales · Odontología</div></div>${bdg('Activo','green')}</div><div style="font-size:.84rem;color:var(--text-muted)">1 comp cada 8 hs · 5 días · Inicio: 10 ene</div><div class="progress-bar-wrap"><div class="progress-bar" style="width:60%"></div></div>`)}
+      `)+
+      col(`${sec('Accesos rápidos')}
+        ${act('calendar-check','Ver mis turnos',"switchPortalTab('turnos',document.querySelectorAll('.ptab')[1])")}
+        ${act('file-medical','Historia clínica',"switchPortalTab('historial',document.querySelectorAll('.ptab')[2])")}
+        ${act('flask-vial','Mis resultados',"switchPortalTab('resultados',document.querySelectorAll('.ptab')[3])")}
+        ${act('calendar-plus','Reservar turno',"closeLoginPanel();showPage('schedule')")}
+        ${act('credit-card','Pagar consulta',"closeLoginPanel();showPage('payments')")}
+        ${act('comment-dots','Chat en línea',"closeLoginPanel();openChat()")}
+      `);
+  } else if(tab==='turnos'){
+    c.innerHTML=
+      col(`${sec('Próximos turnos')}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Odontología — Implantes</div><div class="portal-card-sub">Dr. Alejandro Morales</div></div>${bdg('Confirmado','blue')}</div><div style="font-size:.84rem;color:var(--text-muted);display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;"><span><i class="fa-regular fa-calendar" style="color:var(--teal-mid);margin-right:4px;"></i>15 ene 2026</span><span><i class="fa-regular fa-clock" style="color:var(--teal-mid);margin-right:4px;"></i>10:00 hs</span><span><i class="fa-solid fa-location-dot" style="color:var(--teal-mid);margin-right:4px;"></i>Consul. 3B</span></div><div style="display:flex;gap:8px;margin-top:14px;"><button style="flex:1;padding:10px;background:var(--deep-teal);color:white;border:none;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:600;" onclick="alert('Guardado en calendario')">📅 Calendario</button><button style="flex:1;padding:10px;background:none;border:1.5px solid rgba(220,38,38,.3);color:#dc2626;border-radius:10px;font-size:.82rem;cursor:pointer;font-weight:600;" onclick="alert('Llamar al 0800-333-8482')">Cancelar</button></div>`)}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Salud Mental — Sesión</div><div class="portal-card-sub">Lic. Sofía Medina</div></div>${bdg('Pendiente','gold')}</div><div style="font-size:.84rem;color:var(--text-muted)"><i class="fa-regular fa-calendar" style="color:var(--teal-mid);margin-right:5px;"></i>22 ene 2026 · 15:30 hs</div>`)}
+        <button class="pp-action-btn" onclick="closeLoginPanel();showPage('schedule')"><i class="fa-solid fa-calendar-plus"></i>Reservar nuevo turno<span class="arrow"><i class="fa-solid fa-chevron-right"></i></span></button>
+      `)+
+      col(`${sec('Historial de turnos')}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Medicina Estética — Botox</div><div class="portal-card-sub">Dra. Valentina Ríos</div></div>${bdg('Realizado','green')}</div><div style="font-size:.82rem;color:var(--text-muted)">12 nov 2025 · 14:30 hs · Consul. 5A</div>`)}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Clínica General — Chequeo</div><div class="portal-card-sub">Dr. Nicolás Herrera</div></div>${bdg('Realizado','green')}</div><div style="font-size:.82rem;color:var(--text-muted)">03 ago 2025 · 09:00 hs · Consul. 1A</div>`)}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Fisioterapia — Sesión 3</div><div class="portal-card-sub">Dra. Carolina Torres</div></div>${bdg('Realizado','green')}</div><div style="font-size:.82rem;color:var(--text-muted)">18 jun 2025 · 11:00 hs · Consul. 7</div>`)}
+      `);
+  } else if(tab==='historial'){
+    c.innerHTML=
+      col(`${sec('Datos médicos generales')}
+        ${card(`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.88rem;"><div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)"><span style="color:var(--text-muted);font-size:.72rem;display:block;margin-bottom:4px">Grupo sanguíneo</span><strong style="color:var(--deep-teal);font-size:1.15rem">A+</strong></div><div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)"><span style="color:var(--text-muted);font-size:.72rem;display:block;margin-bottom:4px">Alergias</span><strong style="color:#dc2626">Penicilina</strong></div><div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)"><span style="color:var(--text-muted);font-size:.72rem;display:block;margin-bottom:4px">Peso</span><strong style="color:var(--deep-teal)">62 kg</strong></div><div style="background:white;border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border)"><span style="color:var(--text-muted);font-size:.72rem;display:block;margin-bottom:4px">Talla</span><strong style="color:var(--deep-teal)">165 cm</strong></div></div>`)}
+        ${sec('Diagnósticos activos')}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Bruxismo</div><div class="portal-card-sub">Dr. Morales · Odontología</div></div>${bdg('En tratamiento','gold')}</div><div style="font-size:.84rem;color:var(--text-muted)">Placa de relajación nocturna desde 10 ene 2026</div>`)}
+      `)+
+      col(`${sec('Procedimientos realizados')}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Implante dental #46</div><div class="portal-card-sub">Dr. Morales · Nov 2025</div></div>${bdg('Completado','green')}</div><div style="font-size:.84rem;color:var(--text-muted)">Implante Nobel Biocare · Oseointegración exitosa</div>`)}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Toxina Botulínica Facial</div><div class="portal-card-sub">Dra. Ríos · Nov 2025</div></div>${bdg('Completado','green')}</div><div style="font-size:.84rem;color:var(--text-muted)">40 U. · Próximo refuerzo: may 2026</div>`)}
+        ${sec('Vacunas')}
+        ${card(`<div class="result-item"><span class="result-name">COVID-19 (refuerzo)</span><span class="result-val normal">✔ Abr 2024</span></div><div class="result-item"><span class="result-name">Gripe anual</span><span class="result-val normal">✔ May 2025</span></div><div class="result-item"><span class="result-name">Hepatitis B</span><span class="result-val normal">✔ Completa</span></div><div class="result-item" style="border-bottom:none"><span class="result-name">Fiebre Amarilla</span><span class="result-val low">⚠ Pendiente</span></div>`)}
+      `);
+  } else if(tab==='resultados'){
+    c.innerHTML=
+      col(`${sec('Laboratorio · Ago 2025')}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Hemograma completo</div><div class="portal-card-sub">Dr. Herrera · 03 ago 2025</div></div>${bdg('Revisar','gold')}</div><div class="result-item"><span class="result-name">Glucemia</span><div><span class="result-val normal">88 mg/dL</span><div class="result-range">Ref: 70–100</div></div></div><div class="result-item"><span class="result-name">Colesterol total</span><div><span class="result-val high">215 mg/dL</span><div class="result-range">Ref: &lt;200 ↑</div></div></div><div class="result-item"><span class="result-name">Hemoglobina</span><div><span class="result-val normal">13.8 g/dL</span><div class="result-range">Ref: 12–16</div></div></div><div class="result-item" style="border-bottom:none"><span class="result-name">TSH</span><div><span class="result-val low">0.3 µUI/mL</span><div class="result-range">Ref: 0.4–4.0 ↓</div></div></div><button style="margin-top:14px;width:100%;padding:11px;background:var(--deep-teal);color:white;border:none;border-radius:12px;font-size:.88rem;cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px" onclick="alert('Descargando PDF...')"><i class="fa-solid fa-file-pdf"></i>Descargar PDF</button>`)}
+      `)+
+      col(`${sec('Estudios e indicaciones')}
+        ${card(`<div class="portal-card-header"><div><div class="portal-card-title">Rx Periapical #46</div><div class="portal-card-sub">10 ene 2026 · Dr. Morales</div></div>${bdg('Disponible','blue')}</div><div style="font-size:.84rem;color:var(--text-muted);margin-bottom:12px">Radiografía periapical sector posterior inferior.</div><button style="width:100%;padding:10px;background:none;border:1.5px solid var(--border);border-radius:10px;font-size:.84rem;cursor:pointer;color:var(--teal-mid);font-weight:600" onclick="alert('Abriendo visor DICOM...')"><i class="fa-regular fa-image"></i> Ver imagen</button>`)}
+        ${sec('Indicaciones médicas')}
+        ${card(`<div style="font-size:.88rem;font-weight:700;color:var(--deep-teal);margin-bottom:10px"><i class="fa-solid fa-stethoscope" style="color:var(--teal-mid);margin-right:7px"></i>Dr. Herrera · Ago 2025</div><div style="font-size:.84rem;color:var(--text-muted);line-height:1.85">• Dieta baja en grasas saturadas<br>• Derivación a endocrinología (TSH baja)<br>• Control en 3 meses con laboratorio<br>• Ejercicio aeróbico 3 veces/semana</div>`)}
+      `);
+  } else if(tab==='perfil'){
+    c.innerHTML=
+      col(`${sec('Mis datos personales')}
+        ${card(`<div style="display:flex;align-items:center;gap:16px;margin-bottom:18px"><div class="portal-avatar" style="width:56px;height:56px;font-size:1.25rem">${u.initials}</div><div><div style="font-weight:700;color:var(--deep-teal);font-size:1.08rem">${u.nombre} ${u.apellido}</div><div style="font-size:.78rem;color:var(--text-muted);margin-top:3px">ID: ${u.id}</div></div></div><div style="font-size:.88rem"><div class="result-item"><span class="result-name">DNI</span><span style="color:var(--deep-teal);font-weight:600">${u.dni}</span></div><div class="result-item"><span class="result-name">Nacimiento</span><span style="color:var(--deep-teal);font-weight:600">${u.fechaNac}</span></div><div class="result-item"><span class="result-name">Email</span><span style="color:var(--deep-teal);font-weight:600">${u.email}</span></div><div class="result-item"><span class="result-name">Teléfono</span><span style="color:var(--deep-teal);font-weight:600">${u.telefono}</span></div><div class="result-item" style="border-bottom:none"><span class="result-name">Obra Social</span><span style="color:var(--deep-teal);font-weight:600">${u.obraSocial}</span></div></div>`)}
+      `)+
+      col(`${sec('Configuración de cuenta')}
+        ${act('pen','Editar datos personales',"alert('Disponible en la app móvil VitaCenter')")}
+        ${act('lock','Cambiar contraseña',"alert('Link enviado a tu email')")}
+        ${act('bell','Notificaciones y recordatorios',"alert('Preferencias guardadas')")}
+        ${act('file-shield','Privacidad y mis datos',"closeLoginPanel();showPage('legal')")}
+        ${act('mobile-screen','Descargar app VitaCenter',"alert('Disponible en App Store y Google Play')")}
+        <div style="margin-top:4px;padding:14px 16px;background:rgba(74,173,166,.08);border:1.5px solid rgba(74,173,166,.2);border-radius:14px;font-size:.82rem;color:var(--text-muted);line-height:1.6"><i class="fa-solid fa-shield-halved" style="color:var(--teal-mid);margin-right:6px"></i>Ley 25.326 · <strong style="color:var(--teal)">privacidad@vitacenter.com.ar</strong></div>
+      `);
+  }
+}
+
+showPage('home');
+</script>
+</body>
+</html>
